@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper>
-
+<mapper namespace="com.example.postproject.repository.UploadImageRepository">
+    <select id="findUploadImages" resultType="UploadImage">
+        select *
+        from upload_image
+        where post_id = #{postId}
+    </select>
+    <insert id="insertUploadImage" useGeneratedKeys="true" keyProperty="id">
+        insert into upload_image (original_filename, saved_filename, filesize, post_id)
+        values
+        <foreach collection="images" item="image" separator=",">
+            (#{image.originalFilename}, #{image.savedFilename}, #{image.filesize}, #{image.postId})
+        </foreach>
+    </insert>
+    <update id="updateUploadImage">
+        <foreach collection="images" item="image">
+            update upload_image
+            <set>
+                <if test="image.originalFilename != null">
+                    original_filename = #{image.originalFilename},
+                </if>
+                <if test="image.savedFilename != null">
+                    saved_filename = #{image.savedFilename},
+                </if>
+                <if test="image.filesize != null">
+                    filesize = #{image.filesize},
+                </if>
+            </set>
+            where id = #{image.id} and post_id = #{postId}
+        </foreach>
+    </update>
+    <delete id="deleteUploadImage">
+        delete
+        from upload_image
+        where post_id = #{postId}
+        and id in
+        <foreach collection="imageIds" open="(" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

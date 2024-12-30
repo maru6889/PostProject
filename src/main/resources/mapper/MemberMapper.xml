@@ -1,6 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper>
+<mapper namespace="com.example.postproject.repository.MemberRepository">
+    <select id="findMembers" resultType="Member">
+        select *
+        from member
+    </select>
 
+    <select id="findMemberById" resultType="Member">
+        select *
+        from member
+        where id = #{id}
+    </select>
+
+    <insert id="insertMember" useGeneratedKeys="true" keyProperty="id">
+        insert into member(nickname, login_id, password, user_role)
+        values (#{nickname}, #{loginId}, #{password}, #{userRole})
+    </insert>
+
+    <update id="updateMember">
+        update member
+        <set>
+            <if test="member.nickname != null">
+                nickname = #{member.nickname}
+            </if>
+            <if test="member.loginId != null">
+                login_id = #{member.loginId}
+            </if>
+            <if test="member.password != null">
+                password = #{member.password}
+            </if>
+            <if test="member.userRole != null">
+                user_role = #{member.userRole}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMember">
+        delete
+        from member
+        where id = #{id}
+    </delete>
 </mapper>

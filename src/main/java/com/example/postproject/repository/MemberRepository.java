@@ -2,6 +2,7 @@ package com.example.postproject.repository;
 
 import com.example.postproject.domain.Member;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface MemberRepository {
     int insertMember(Member member);
     //수정
 
-    int updateMember(Member member);
+    int updateMember(@Param("id") Long id, @Param("member") Member member);
     //삭제
 
     int deleteMember(Long id);

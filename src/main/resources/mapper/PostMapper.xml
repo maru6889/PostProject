@@ -1,6 +1,54 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper>
+<mapper namespace="com.example.postproject.repository.PostRepository">
+    <select id="findPostsByMemberId" resultType="Post">
+        select *
+        from post
+        where member_id = #{memberId}
+    </select>
 
+    <select id="findPostsWithPaginationAndFilter" resultType="Post">
+        select *
+        from post
+        <where>
+            <if test="keyword != null">
+                title like concat('%', #{keyword}, '%')
+            </if>
+        </where>
+        order by created_at desc
+        <if test="limit != null and offset != null">
+            limit #{limit} offset #{offset}
+        </if>
+    </select>
+
+    <select id="findPostById" resultType="Post">
+        select *
+        from post
+        where id = #{id}
+    </select>
+
+    <insert id="insertPost" useGeneratedKeys="true" keyProperty="id" parameterType="Post">
+        insert into post (title, content)
+        values (#{title}, #{content})
+    </insert>
+
+    <update id="updatePost" parameterType="Post">
+        update post
+        <set>
+            <if test="title != null">
+                title = #{title}
+            </if>
+            <if test="content != null">
+                content = #{content}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePost">
+        delete
+        from post
+        where id = #{id};
+    </delete>
 </mapper>
