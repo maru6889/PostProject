@@ -9,12 +9,12 @@ import java.util.List;
 @Mapper
 public interface CommentRepository {
     //댓글 조회
-    List<Comment> findCommentsPostId(Long postId);
+    List<Comment> findCommentsByPostId(Long postId);
 
     Comment findCommentById(Long id);
 
     //댓글 작성
-    int insertComment(Comment comment);
+    int insertComment(@Param("content") String content, @Param("postId") Long postId, @Param("memberId") Long memberId);
 
     //댓글 수정
     int updateComment(@Param("id") Long id,@Param("content") String content);

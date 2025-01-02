@@ -29,8 +29,8 @@
     </select>
 
     <insert id="insertPost" useGeneratedKeys="true" keyProperty="id" parameterType="Post">
-        insert into post (title, content)
-        values (#{title}, #{content})
+        insert into post (title, content, member_id)
+        values (#{title}, #{content}, #{memberId})
     </insert>
 
     <update id="updatePost" parameterType="Post">

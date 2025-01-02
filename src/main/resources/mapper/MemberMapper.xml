@@ -7,10 +7,10 @@
         from member
     </select>
 
-    <select id="findMemberById" resultType="Member">
+    <select id="findMemberByLoginId" resultType="Member">
         select *
         from member
-        where id = #{id}
+        where login_id = #{loginId}
     </select>
 
     <insert id="insertMember" useGeneratedKeys="true" keyProperty="id">
@@ -24,22 +24,16 @@
             <if test="member.nickname != null">
                 nickname = #{member.nickname}
             </if>
-            <if test="member.loginId != null">
-                login_id = #{member.loginId}
-            </if>
             <if test="member.password != null">
                 password = #{member.password}
             </if>
-            <if test="member.userRole != null">
-                user_role = #{member.userRole}
-            </if>
         </set>
-        where id = #{id}
+        where login_id = #{loginId}
     </update>
 
     <delete id="deleteMember">
         delete
         from member
-        where id = #{id}
+        where login_id = #{loginId}
     </delete>
 </mapper>

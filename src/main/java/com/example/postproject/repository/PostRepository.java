@@ -14,8 +14,8 @@ public interface PostRepository {
 
     List<Post> findPostsWithPaginationAndFilter(@Param("keyword") String keyword, @Param("offset") int offset, @Param("limit") int limit);
     Post findPostById(Long id);
-    //생성
 
+    //생성
     int insertPost(Post post);
 
     //수정

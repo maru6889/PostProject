@@ -8,6 +8,7 @@ spring:
     password: qwe123
     driver-class-name: org.mariadb.jdbc.Driver
 
+
 mybatis:
   type-aliases-package: com.example.postproject
   mapper-locations: classpath:mapper/*.xml

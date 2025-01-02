@@ -12,14 +12,14 @@ public interface MemberRepository {
     //조회
     List<Member> findMembers();
 
-    Member findMemberById(Long id);
+    Member findMemberByLoginId(String loginId);
+
     //생성
-
     int insertMember(Member member);
-    //수정
 
-    int updateMember(@Param("id") Long id, @Param("member") Member member);
+    //수정
+    int updateMember(@Param("loginId") String loginId, @Param("member") Member member);
     //삭제
 
-    int deleteMember(Long id);
+    int deleteMember(String loginId);
 }
