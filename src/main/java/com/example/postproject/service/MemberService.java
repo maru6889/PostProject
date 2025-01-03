@@ -36,7 +36,7 @@ public class MemberService {
         Member member = dto.toEntity();
         int result = memberRepository.insertMember(member);
         if (result == 0) {
-            throw new MemberNotInsertException("회원 가입이 이루어지지 않았습니다.");
+            throw new MemberNotInsertException("회원 가입이 이루어지지 않았습니다..");
         }
         return result;
     }

@@ -26,11 +26,12 @@ class MemberServiceTest {
     private MemberService memberService;
 
     @Test
+    @Transactional
     public void insertMember() {
         MemberInsertDto dto = new MemberInsertDto();
-        dto.setLoginId("qwer12345");
+        dto.setLoginId("qwer123456");
         dto.setPassword("qwer1234");
-        dto.setNickname("qwer12345");
+        dto.setNickname("qwer123456");
         dto.toEntity();
         int result = memberService.insertMember(dto);
         assertThat(result).isEqualTo(1);
