@@ -1,9 +1,9 @@
 package com.example.postproject.service;
 
-import com.example.postproject.Exception.MemberNotDeleteException;
-import com.example.postproject.Exception.MemberNotFoundException;
-import com.example.postproject.Exception.MemberNotInsertException;
-import com.example.postproject.Exception.MemberNotUpdateException;
+import com.example.postproject.exception.MemberNotDeleteException;
+import com.example.postproject.exception.MemberNotFoundException;
+import com.example.postproject.exception.MemberNotInsertException;
+import com.example.postproject.exception.MemberNotUpdateException;
 import com.example.postproject.domain.Member;
 import com.example.postproject.domain.dto.MemberInsertDto;
 import com.example.postproject.domain.dto.MemberUpdateDto;
@@ -24,7 +24,7 @@ public class MemberService {
         return members;
     }
 
-    public Member findMemberById(String loginId) {
+    public Member findMemberByLoginId(String loginId) {
         Member member = memberRepository.findMemberByLoginId(loginId);
         if (member == null) {
             throw new MemberNotFoundException("해당 회원을 찾을 수 없습니다.");

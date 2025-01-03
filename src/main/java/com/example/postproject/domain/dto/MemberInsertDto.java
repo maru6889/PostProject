@@ -1,6 +1,7 @@
 package com.example.postproject.domain.dto;
 
 import com.example.postproject.domain.Member;
+import com.example.postproject.domain.UserRole;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +18,7 @@ public class MemberInsertDto {
                 .nickname(nickname)
                 .loginId(loginId)
                 .password(password)
+                .userRole(UserRole.USER)
                 .build();
     }
 }

@@ -1,6 +1,6 @@
 package com.example.postproject.service;
 
-import com.example.postproject.Exception.CommentNotFoundException;
+import com.example.postproject.exception.CommentNotFoundException;
 import com.example.postproject.domain.Comment;
 import com.example.postproject.domain.Member;
 import com.example.postproject.domain.dto.CommentInsertDto;

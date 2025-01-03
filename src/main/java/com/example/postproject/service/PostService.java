@@ -1,8 +1,8 @@
 package com.example.postproject.service;
 
-import com.example.postproject.Exception.PostNotInsertException;
-import com.example.postproject.Exception.PostNotUpdateException;
-import com.example.postproject.Exception.PostsNotFoundException;
+import com.example.postproject.exception.PostNotInsertException;
+import com.example.postproject.exception.PostNotUpdateException;
+import com.example.postproject.exception.PostsNotFoundException;
 import com.example.postproject.domain.Member;
 import com.example.postproject.domain.Post;
 import com.example.postproject.domain.dto.PostDto;

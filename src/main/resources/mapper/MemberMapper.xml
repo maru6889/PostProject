@@ -22,10 +22,10 @@
         update member
         <set>
             <if test="member.nickname != null">
-                nickname = #{member.nickname}
+                nickname = #{member.nickname},
             </if>
             <if test="member.password != null">
-                password = #{member.password}
+                password = #{member.password},
             </if>
         </set>
         where login_id = #{loginId}
