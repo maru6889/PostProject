@@ -36,6 +36,10 @@ public class PostService {
         return posts;
     }
 
+    public Post findPostById(Long id) {
+        return postRepository.findPostById(id);
+    }
+
     public int insertPost(PostDto dto, String loginId){
         Member member = memberRepository.findMemberByLoginId(loginId);
         Post post = dto.toEntity(member.getId());
@@ -46,9 +50,10 @@ public class PostService {
         return result;
     }
 
-    public int updatePost(PostDto dto, String loginId) {
-        Member member = memberRepository.findMemberByLoginId(loginId);
-        Post post = dto.toEntity(member.getId());
+    public int updatePost(PostDto dto, Long id) {
+        Post post = postRepository.findPostById(id);
+        post.setTitle(dto.getTitle());
+        post.setContent(dto.getContent());
 
         int result = postRepository.updatePost(post);
         if (result == 0) {
@@ -56,5 +61,9 @@ public class PostService {
         }
 
         return result;
+    }
+
+    public int deletePost(Long id) {
+        return postRepository.deletePost(id);
     }
 }

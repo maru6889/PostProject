@@ -37,10 +37,10 @@
         update post
         <set>
             <if test="title != null">
-                title = #{title}
+                title = #{title},
             </if>
             <if test="content != null">
-                content = #{content}
+                content = #{content},
             </if>
         </set>
         where id = #{id}
