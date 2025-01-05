@@ -26,4 +26,4 @@
         from comment
         where id = #{id}
     </delete>
-</mapper
+</mapper>

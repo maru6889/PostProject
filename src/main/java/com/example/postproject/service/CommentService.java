@@ -41,8 +41,13 @@ public class CommentService {
     //댓글 작성
     public int insertComment(CommentInsertDto dto, Long postId, String loginId) {
         Member member = memberRepository.findMemberByLoginId(loginId);
+        Comment comment = Comment.builder()
+                .content(dto.getContent())
+                .memberId(member.getId())
+                .postId(postId)
+                .build();
 
-        int result = commentRepository.insertComment(dto.getContent(), postId, member.getId());
+        int result = commentRepository.insertComment(comment);
 
         return result;
     }

@@ -17,4 +17,8 @@ public class MemberInsertDto {
         return Member.builder()
                 .nickname(nickname)
                 .loginId(loginId)
-                .passw
+                .password(password)
+                .userRole(UserRole.USER)
+                .build();
+    }
+}

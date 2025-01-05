@@ -14,7 +14,7 @@ public interface CommentRepository {
     Comment findCommentById(Long id);
 
     //댓글 작성
-    int insertComment(@Param("content") String content, @Param("postId") Long postId, @Param("memberId") Long memberId);
+    int insertComment(Comment comment);
 
     //댓글 수정
     int updateComment(@Param("id") Long id,@Param("content") String content);
