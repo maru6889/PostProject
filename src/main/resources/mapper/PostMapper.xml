@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.postproject.repository.PostRepository">
-    <select id="findPostsByMemberId" resultType="Post">
+    <select id="findPostsByMemberId" resultMap="PostResultMap">
         select *
         from post
         where member_id = #{memberId}
     </select>
 
-    <select id="findPostsWithPaginationAndFilter" resultType="Post">
+    <select id="findPostsWithPaginationAndFilter" resultMap="PostResultMap">
         select *
         from post
         <where>
@@ -38,7 +38,7 @@
         </if>
     </select>
 
-    <select id="findPostById" resultType="Post">
+    <select id="findPostById" resultMap="PostResultMap">
         select *
         from post
         where id = #{id}
@@ -78,14 +78,15 @@
         where id = #{id};
     </delete>
 
-<!--    <resultMap id="PostResultMap" type="Post">-->
-<!--        <id column="id" property="id" />-->
-<!--        <result column="title" property="title" />-->
-<!--        <result column="content" property="content" />-->
-<!--        <result column="views" property="views" />-->
-<!--        <result column="member_id" property="memberId" />-->
-<!--        <result column="created_at" property="createdAt" />-->
-<!--    </resultMap>-->
+    <resultMap id="PostResultMap" type="Post">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="content" property="content" />
+        <result column="views" property="views" />
+        <result column="created_at" property="createdAt" />
+        <result column="updated_at" property="updatedAt" />
+        <result column="member_id" property="memberId" />
+    </resultMap>
 
     <resultMap id="PostDtoResultMap" type="PostDto">
         <id column="id" property="id" />

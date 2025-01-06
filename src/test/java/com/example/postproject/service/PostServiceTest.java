@@ -77,11 +77,13 @@ class PostServiceTest {
         PostDto dto = new PostDto();
         dto.setTitle("안녕하세요");
         dto.setContent("...");
+        Post before = postService.findPostById(1L);
         int result = postService.updatePost(dto, 1L);
         assertThat(result).isEqualTo(1);
-        Post post = postService.findPostById(1L);
-        assertThat(post.getTitle()).isEqualTo("안녕하세요");
-        assertThat(post.getContent()).isEqualTo("...");
+        Post after = postService.findPostById(1L);
+        assertThat(before.getUpdatedAt()).isNotEqualTo(after.getUpdatedAt());
+        assertThat(after.getTitle()).isEqualTo("안녕하세요");
+        assertThat(after.getContent()).isEqualTo("...");
     }
 
     @Test
