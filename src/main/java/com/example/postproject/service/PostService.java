@@ -36,8 +36,16 @@ public class PostService {
         return posts;
     }
 
+    public List<PostDto> findPostsWithMemberAndPaginationAndFilter(String keyword, int offset, int limit) {
+        return postRepository.findPostsWithMemberAndPaginationAndFilter(keyword, offset, limit);
+    }
+
     public Post findPostById(Long id) {
         return postRepository.findPostById(id);
+    }
+
+    public int countPosts(String keyword){
+        return postRepository.countPosts(keyword);
     }
 
     public int insertPost(PostDto dto, String loginId){

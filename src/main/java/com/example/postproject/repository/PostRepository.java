@@ -1,6 +1,7 @@
 package com.example.postproject.repository;
 
 import com.example.postproject.domain.Post;
+import com.example.postproject.domain.dto.PostDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -13,7 +14,11 @@ public interface PostRepository {
     List<Post> findPostsByMemberId(Long memberId);
 
     List<Post> findPostsWithPaginationAndFilter(@Param("keyword") String keyword, @Param("offset") int offset, @Param("limit") int limit);
+
+    List<PostDto> findPostsWithMemberAndPaginationAndFilter(@Param("keyword") String keyword, @Param("offset") int offset, @Param("limit") int limit);
     Post findPostById(Long id);
+
+    int countPosts(String keyword);
 
     //생성
     int insertPost(Post post);

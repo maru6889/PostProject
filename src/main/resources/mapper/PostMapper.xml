@@ -22,10 +22,36 @@
         </if>
     </select>
 
+    <select id="findPostsWithMemberAndPaginationAndFilter" resultMap="PostDtoResultMap">
+        select p.id, p.title, p.content, p.views, p.created_at, m.nickname
+        from post p
+        join member m
+        on p.member_id = m.id
+        <where>
+            <if test="keyword != null">
+                p.title like concat('%', #{keyword}, '%')
+            </if>
+        </where>
+        order by p.created_at desc
+        <if test="limit != null and offset != null">
+            limit #{limit} offset #{offset}
+        </if>
+    </select>
+
     <select id="findPostById" resultType="Post">
         select *
         from post
         where id = #{id}
+    </select>
+
+    <select id="countPosts" resultType="int">
+        select count(*)
+        from post
+        <where>
+            <if test="keyword != null">
+                title like concat('%', #{keyword}, '%')
+            </if>
+        </where>
     </select>
 
     <insert id="insertPost" useGeneratedKeys="true" keyProperty="id" parameterType="Post">
@@ -51,4 +77,22 @@
         from post
         where id = #{id};
     </delete>
+
+<!--    <resultMap id="PostResultMap" type="Post">-->
+<!--        <id column="id" property="id" />-->
+<!--        <result column="title" property="title" />-->
+<!--        <result column="content" property="content" />-->
+<!--        <result column="views" property="views" />-->
+<!--        <result column="member_id" property="memberId" />-->
+<!--        <result column="created_at" property="createdAt" />-->
+<!--    </resultMap>-->
+
+    <resultMap id="PostDtoResultMap" type="PostDto">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="content" property="content" />
+        <result column="views" property="views" />
+        <result column="created_at" property="createdAt" />
+        <result column="nickname" property="nickname" />
+    </resultMap>
 </mapper>

@@ -1,11 +1,8 @@
 package com.example.postproject.service;
 
 import com.example.postproject.domain.Comment;
-import com.example.postproject.domain.Member;
-import com.example.postproject.domain.Post;
 import com.example.postproject.domain.dto.CommentInsertDto;
 import com.example.postproject.exception.CommentNotFoundException;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head">
+ <style>
+     /* 검색창 */
+     form {
+         margin-bottom: 20px;
+         display: flex;
+         justify-content: center;
+         gap: 10px;
+     }
+
+     form input[type="text"] {
+         width: 300px;
+         padding: 10px;
+         border: 1px solid #ccc;
+         border-radius: 5px;
+         font-size: 14px;
+     }
+
+     form button {
+         padding: 10px 20px;
+         background-color: #007BFF;
+         color: white;
+         border: none;
+         border-radius: 5px;
+         font-size: 14px;
+         cursor: pointer;
+     }
+
+     form button:hover {
+         background-color: #0056b3;
+     }
+ </style>
+</head>
+<body>
+<div th:replace="fragments/header :: header">
+</div>
+<div th:replace="fragments/nav :: nav">
+</div>
+<form th:action="@{/post/list}" th:method="get" th:object="${postSearchDto}">
+    <input type="text" th:field="*{keyword}" placeholder="검색할 제목을 입력하세요."/>
+    <button type="submit">검색</button>
+</form>
+<table border="1">
+    <thead>
+    <tr>
+        <th>번호</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>작성일</th>
+        <th>조회수</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="post : ${posts}">
+        <td th:text="${post.id}"></td>
+        <td th:text="${post.title}"></td>
+        <td th:text="${post.nickname}"></td>
+        <td th:text="${#temporals.format(post.createdAt, 'yy/MM/dd HH:mm')}"></td>
+        <td th:text="${post.views}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="pagination">
+    <button th:if="${currentPage} > 1"
+            th:onclick="|location.href='@{/post/list(page=${currentPage-1}, keyword=${keyword})}'|">
+        이전
+    </button>
+
+    <span th:each="i : ${#numbers.sequence(1, totalPages)}">
+        <button th:onclick="|location.href='@{/post/list(page=${i}, keyword=${keyword})}'|"
+        th:text="${i}"
+        th:classappend="${i == currentPage} ? 'active' : ''">
+        </button>
+    </span>
+
+    <button th:if="${currentPage < totalPages}"
+            th:onclick="|location.href='@{/post/list(page=${currentPage + 1}, keyword=${keyword})}'|">
+        다음
+    </button>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

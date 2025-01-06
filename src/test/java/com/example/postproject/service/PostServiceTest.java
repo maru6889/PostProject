@@ -2,6 +2,7 @@ package com.example.postproject.service;
 
 import com.example.postproject.domain.Post;
 import com.example.postproject.domain.dto.PostDto;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +18,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
+@Slf4j
 class PostServiceTest {
 
     @Autowired
     private PostService postService;
-
-    @Autowired
-    private MemberService memberService;
 
     @Test
     @Transactional
@@ -49,7 +48,28 @@ class PostServiceTest {
         List<Post> posts = postService.findPostsWithPaginationAndFilter("안녕", 0, 10);
         assertThat(posts.size()).isEqualTo(1);
         assertThat(posts.getFirst().getId()).isEqualTo(1L);
+
+        for (Post post : posts) {
+            log.info("post.createdAt: {}", post.getCreatedAt());
+        }
     }
+
+    @Test
+    public void findPostsWithMemberAndPaginationAndFilter() {
+        List<PostDto> posts = postService.findPostsWithMemberAndPaginationAndFilter("안녕", 0, 10);
+        assertThat(posts.size()).isEqualTo(1);
+
+        for (PostDto post : posts) {
+            log.info("post.id: {}",post.getId());
+            log.info("post.title: {}",post.getTitle());
+            log.info("post.content: {}",post.getContent());
+            log.info("post.views: {}",post.getViews());
+            log.info("post.createdAt: {}",post.getCreatedAt());
+            log.info("post.nickname: {}",post.getNickname());
+
+        }
+    }
+
 
     @Test
     @Transactional
