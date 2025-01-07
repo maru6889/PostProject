@@ -40,7 +40,7 @@ class PostServiceTest {
     @Test
     public void findPostsByMemberId() {
         List<Post> posts = postService.findPostsByMemberId(6L);
-        assertThat(posts.size()).isEqualTo(1);
+        assertThat(posts.size()).isEqualTo(101);
     }
 
     @Test

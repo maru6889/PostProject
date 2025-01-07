@@ -1,20 +1,18 @@
-package com.example.postproject.domain;
+package com.example.postproject.domain.dto;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class Post {
+public class CommentDto {
+
     private Long id;
-    private String title;
     private String content;
-    private int views;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private String nickname;
     private Long memberId;
 }

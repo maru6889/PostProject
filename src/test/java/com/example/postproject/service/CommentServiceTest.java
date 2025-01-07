@@ -1,6 +1,7 @@
 package com.example.postproject.service;
 
 import com.example.postproject.domain.Comment;
+import com.example.postproject.domain.dto.CommentDto;
 import com.example.postproject.domain.dto.CommentInsertDto;
 import com.example.postproject.exception.CommentNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -46,6 +47,12 @@ class CommentServiceTest {
     public void findCommentById() {
         Comment comment = commentService.findCommentById(1L);
         assertThat(comment.getId()).isEqualTo(1L);
+    }
+
+    @Test
+    public void findCommentWithMemberByPostId() {
+        List<CommentDto> comments = commentService.findCommentWithMemberByPostId(106L, 10, 0);
+        assertThat(comments.size()).isEqualTo(1);
     }
 
     @Test

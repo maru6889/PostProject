@@ -1,5 +1,6 @@
 package com.example.postproject.service;
 
+import com.example.postproject.domain.dto.CommentDto;
 import com.example.postproject.exception.CommentNotFoundException;
 import com.example.postproject.domain.Comment;
 import com.example.postproject.domain.Member;
@@ -21,12 +22,7 @@ public class CommentService {
 
     //댓글 조회
     public List<Comment> findCommentsByPostId(Long postId){
-        List<Comment> comments = commentRepository.findCommentsByPostId(postId);
-        if (comments.isEmpty()) {
-            // 예외 발생
-            throw new NoSuchElementException("댓글이 없습니다.");
-        }
-        return comments;
+        return commentRepository.findCommentsByPostId(postId);
     }
 
     public Comment findCommentById(Long id)  {
@@ -36,6 +32,14 @@ public class CommentService {
         }
         return comment;
 
+    }
+
+    public List<CommentDto> findCommentWithMemberByPostId(Long postId, int limit, int offset) {
+        return commentRepository.findCommentWithMemberByPostId(postId, limit, offset);
+    }
+
+    public int countCommentsByPostId(Long postId) {
+        return commentRepository.countCommentsByPostId(postId);
     }
 
     //댓글 작성

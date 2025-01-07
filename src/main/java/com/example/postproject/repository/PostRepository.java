@@ -18,6 +18,8 @@ public interface PostRepository {
     List<PostDto> findPostsWithMemberAndPaginationAndFilter(@Param("keyword") String keyword, @Param("offset") int offset, @Param("limit") int limit);
     Post findPostById(Long id);
 
+    PostDto findPostWithMemberById(Long id);
+
     int countPosts(String keyword);
 
     //생성

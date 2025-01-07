@@ -1,10 +1,226 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head">
+    <style>
+        .comment-actions {
+            display: flex;
+            gap: 10px;
+            margin-left: 10px;
+        }
+
+        textarea.edit-content  {
+            display: none;
+            width: 100%;
+            height: 80px; /* 조금 더 넓게 */
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            resize: none; /* 크기 조정 비활성화 */
+            background-color: #f9f9f9;
+            transition: all 0.3s ease; /* 애니메이션 추가 */
+        }
+
+        textarea.edit-content:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            background-color: #ffffff;
+            outline: none;
+        }
+    </style>
 </head>
 <body>
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/nav :: nav"></div>
+<div class="main-container">
+    <div class="post-detail">
+        <!-- 게시글 정보 -->
+        <div class="post-header">
+            <h1 th:text="${post.title}">게시글 제목</h1>
+            <div class="post-meta">
+                작성자: <span th:text="${post.nickname}">작성자</span> |
+                작성일: <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">2025-01-01 10:00</span> |
+                조회수: <span th:text="${post.views}">123</span>
+            </div>
+        </div>
 
+        <div class="post-content">
+            <p th:text="${post.content}">여기에 게시글 내용이 표시됩니다.</p>
+        </div>
+    </div>
+
+    <div class="comment-section">
+        <!-- 댓글 정보 -->
+        <div class="comment-header">
+            <h3>댓글</h3>
+        </div>
+
+        <div class="comment-list">
+            <div th:each="comment : ${commentList}" class="comment-item">
+                <div class="comment-meta">
+                    <span th:text="${comment.nickname}">댓글 작성자</span> |
+                    <span th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">2025-01-01 10:30</span>
+                    <span class="comment-actions">
+                <!-- 수정 버튼 -->
+                <button class="edit-btn" th:commentId="${comment.id}" th:commentContent="${comment.content}"
+                        th:onclick="editComment(this.getAttribute('commentId'), this.getAttribute('commentContent'))">
+                    수정
+                </button>
+                        <!-- 삭제 버튼 -->
+                <button class="delete-btn"
+                        th:commentId="${comment.id}"
+                        th:onclick="deleteComment(this.getAttribute('commentId'))">
+                    삭제
+                </button>
+                        <button class="confirm-btn" style="display: none;" th:commentId="${comment.id}"
+                                th:onclick="confirmEdit(this.getAttribute('commentId'), this)">
+                         확인
+                    </button>
+            <button class="cancel-btn" style="display: none;" th:commentId="${comment.id}"
+                    th:onclick="cancelEdit(this.getAttribute('commentId'), this)">
+                취소
+            </button>
+            </span>
+                </div>
+                <div class="comment-content">
+                    <p th:text="${comment.content}">댓글 내용</p>
+                    <textarea class="edit-content" th:id="'edit-content-' + ${comment.id}"
+                              style="display: none;"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- 댓글 페이징 -->
+        <div class="pagination">
+            <button th:if="${currentPage > 1}"
+                    th:onclick="|location.href='@{/post/detail(id=${post.id}, page=${currentPage - 1})}'|">
+                이전
+            </button>
+            <span th:each="i : ${#numbers.sequence(1, totalPages)}">
+                <button th:onclick="|location.href='@{/post/detail(id=${post.id}, page=${i})}'|"
+                        th:classappend="${i == currentPage} ? 'active' : ''" th:text="${i}">
+                </button>
+            </span>
+            <button th:if="${currentPage < totalPages}"
+                    th:onclick="|location.href='@{/post/detail(id=${post.id}, page=${currentPage + 1})}'|">
+                다음
+            </button>
+        </div>
+
+        <!-- 댓글 작성 -->
+        <div class="comment-form">
+            <form th:action="@{/comment/create}" th:object="${commentInsertDto}" method="post">
+                <textarea th:field="*{content}" placeholder="댓글을 입력하세요."></textarea>
+                <input type="hidden" th:field="${post.id}" th:value="${post.id}"/>
+                <button type="submit">댓글 작성</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div th:replace="fragments/footer :: footer"></div>
+<script th:inline="javascript">
+    function editComment(commentId, currentContent) {
+
+        console.log('댓글 ID:', commentId);
+        console.log('댓글 내용:', currentContent);
+
+        const textarea = document.getElementById('edit-content-' + commentId);
+        const contentElement = textarea.previousElementSibling;
+
+        // 버튼 그룹
+        const actions = textarea.closest('.comment-item').querySelector('.comment-actions');
+        const editBtn = actions.querySelector('.edit-btn');
+        const deleteBtn = actions.querySelector('.delete-btn');
+        const confirmBtn = actions.querySelector('.confirm-btn');
+        const cancelBtn = actions.querySelector('.cancel-btn');
+
+        if (textarea.style.display === 'none' || textarea.style.display === '') {
+            // 수정 모드: textarea 보여주고 버튼 전환
+            textarea.style.display = 'block';
+            textarea.value = currentContent;
+            contentElement.style.display = 'none';
+            editBtn.style.display = 'none';
+            deleteBtn.style.display = 'none';
+            confirmBtn.style.display = 'inline-block';
+            cancelBtn.style.display = 'inline-block';
+        }
+    }
+
+    function deleteComment(commentId) {
+        if (confirm('댓글을 삭제하시겠습니까?')) {
+            $.ajax({
+                url: '/comment/delete',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({id: commentId}),
+                success: function (data) {
+                    if (data.success) {
+                        document.querySelector(`#edit-content-${commentId}`).closest('.comment-item').remove();
+                    } else {
+                        alert('삭제 실패!');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error: ', error);
+                    alert('삭제 중 오류가 발생했습니다.');
+                }
+            })
+        }
+    }
+
+    function confirmEdit(commentId, confirmButton){
+        const textarea = document.getElementById('edit-content-' + commentId);
+        const contentElement = textarea.previousElementSibling;
+        const newContent = textarea.value;
+
+        //AJAX 요청
+        $.ajax({
+            url: '/comment/update',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({id: commentId, content: newContent}),
+            success: function (data) {
+                if (data.success) {
+                    contentElement.textContent = newContent;
+                    textarea.style.display = 'none';
+                    contentElement.style.display = 'block';
+
+                    // 버튼 전환
+                    const actions = confirmButton.closest('.comment-actions');
+                    actions.querySelector('.edit-btn').style.display = 'inline-block';
+                    actions.querySelector('.delete-btn').style.display = 'inline-block';
+                    actions.querySelector('.confirm-btn').style.display = 'none';
+                    actions.querySelector('.cancel-btn').style.display = 'none';
+                } else {
+                    alert('수정 실패!');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error: ', error);
+                alert('수정 중 오류가 발생했습니다.');
+            }
+        });
+    }
+
+    function cancelEdit(commentId, cancelButton) {
+        const textarea = document.getElementById('edit-content-' + commentId);
+        const contentElement = textarea.previousElementSibling;
+
+        // textarea 숨기기
+        textarea.style.display = 'none';
+        contentElement.style.display = 'block';
+
+        // 버튼 전환
+        const actions = cancelButton.closest('.comment-actions');
+        actions.querySelector('.edit-btn').style.display = 'inline-block';
+        actions.querySelector('.delete-btn').style.display = 'inline-block';
+        actions.querySelector('.confirm-btn').style.display = 'none';
+        actions.querySelector('.cancel-btn').style.display = 'none';
+    }
+</script>
 </body>
 </html>

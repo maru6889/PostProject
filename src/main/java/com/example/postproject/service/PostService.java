@@ -44,6 +44,10 @@ public class PostService {
         return postRepository.findPostById(id);
     }
 
+    public PostDto findPostWithMemberById(Long id){
+        return postRepository.findPostWithMemberById(id);
+    }
+
     public int countPosts(String keyword){
         return postRepository.countPosts(keyword);
     }

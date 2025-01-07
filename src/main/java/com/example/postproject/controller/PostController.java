@@ -1,8 +1,10 @@
 package com.example.postproject.controller;
 
 import com.example.postproject.domain.Post;
+import com.example.postproject.domain.dto.CommentInsertDto;
 import com.example.postproject.domain.dto.PostDto;
 import com.example.postproject.domain.dto.PostSearchDto;
+import com.example.postproject.service.CommentService;
 import com.example.postproject.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,7 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final CommentService commentService;
 
     /**
      *
@@ -48,5 +51,24 @@ public class PostController {
         model.addAttribute("postSearchDto", new PostSearchDto(keyword));
 
         return "post/list";
+    }
+
+    @GetMapping("/detail")
+    public String postDetailPage(Model model, @RequestParam(name = "id") Long id,
+                                 @RequestParam(required = false, name = "page", defaultValue = "1") int page,
+                                 @RequestParam(required = false, name = "limit", defaultValue = "5") int limit){
+
+
+        int offset = (page - 1) * limit; //조회할 데이터의 시작 위치
+        PostDto dto = postService.findPostWithMemberById(id);
+        int totalComments = commentService.countCommentsByPostId(id);
+        int totalPages = (int) Math.ceil((double) totalComments / limit);
+
+        model.addAttribute("post", dto);
+        model.addAttribute("commentInsertDto", new CommentInsertDto());
+        model.addAttribute("commentList", commentService.findCommentWithMemberByPostId(id, limit, offset));
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        return "post/detail";
     }
 }

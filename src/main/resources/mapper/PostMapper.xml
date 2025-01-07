@@ -23,7 +23,7 @@
     </select>
 
     <select id="findPostsWithMemberAndPaginationAndFilter" resultMap="PostDtoResultMap">
-        select p.id, p.title, p.content, p.views, p.created_at, m.nickname
+        select p.id, p.title, p.content, p.views, p.created_at, p.updated_at, m.nickname
         from post p
         join member m
         on p.member_id = m.id
@@ -42,6 +42,14 @@
         select *
         from post
         where id = #{id}
+    </select>
+
+    <select id="findPostWithMemberById" resultMap="PostDtoResultMap">
+        select *
+        from post p
+                 join member m
+                      on p.member_id = m.id
+        where p.id = #{id}
     </select>
 
     <select id="countPosts" resultType="int">
@@ -79,21 +87,22 @@
     </delete>
 
     <resultMap id="PostResultMap" type="Post">
-        <id column="id" property="id" />
-        <result column="title" property="title" />
-        <result column="content" property="content" />
-        <result column="views" property="views" />
-        <result column="created_at" property="createdAt" />
-        <result column="updated_at" property="updatedAt" />
-        <result column="member_id" property="memberId" />
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="views" property="views"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+        <result column="member_id" property="memberId"/>
     </resultMap>
 
     <resultMap id="PostDtoResultMap" type="PostDto">
-        <id column="id" property="id" />
-        <result column="title" property="title" />
-        <result column="content" property="content" />
-        <result column="views" property="views" />
-        <result column="created_at" property="createdAt" />
-        <result column="nickname" property="nickname" />
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="views" property="views"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+        <result column="nickname" property="nickname"/>
     </resultMap>
 </mapper>

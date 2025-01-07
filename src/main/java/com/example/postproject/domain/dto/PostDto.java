@@ -15,6 +15,7 @@ public class PostDto {
     private String content;
     private int views;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private String nickname;
 
     public Post toEntity(Long memberId) {
