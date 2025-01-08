@@ -2,6 +2,8 @@ package com.example.postproject.service;
 
 import com.example.postproject.domain.Post;
 import com.example.postproject.domain.dto.PostDto;
+import com.example.postproject.domain.dto.PostInsertDto;
+import com.example.postproject.domain.dto.PostUpdateDto;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,10 +30,9 @@ class PostServiceTest {
     @Transactional
     public void insertPost(){
 //        assertThat(member).isNull();
-        PostDto dto = new PostDto();
+        PostInsertDto dto = new PostInsertDto();
         dto.setTitle("안녕하세요. 반갑습니다.");
         dto.setContent("안녕하세요 반갑습니다. \n제 이름은 최동연입니다.");
-        dto.toEntity(6L);
         int result = postService.insertPost(dto, "qwer1234");
 
         assertThat(result).isEqualTo(1);
@@ -74,7 +75,7 @@ class PostServiceTest {
     @Test
     @Transactional
     public void updatePost() {
-        PostDto dto = new PostDto();
+        PostUpdateDto dto = new PostUpdateDto();
         dto.setTitle("안녕하세요");
         dto.setContent("...");
         Post before = postService.findPostById(1L);

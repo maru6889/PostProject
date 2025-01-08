@@ -39,7 +39,7 @@
 <div th:replace="fragments/nav :: nav">
 </div>
 <form th:action="@{/post/list}" th:method="get" th:object="${postSearchDto}">
-    <input type="text" th:field="*{keyword}" placeholder="검색할 제목을 입력하세요."/>
+    <input type="text" th:field="${postSearchDto.keyword}" placeholder="검색할 제목을 입력하세요."/>
     <button type="submit">검색</button>
 </form>
 <div class="write-btn-wrapper">

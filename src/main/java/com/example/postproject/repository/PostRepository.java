@@ -28,6 +28,8 @@ public interface PostRepository {
     //수정
     int updatePost(Post post);
 
+    void incrementViews(Long id);
+
     //삭제
     int deletePost(Long id);
 }

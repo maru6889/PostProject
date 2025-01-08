@@ -1,5 +1,7 @@
 package com.example.postproject.service;
 
+import com.example.postproject.domain.dto.PostInsertDto;
+import com.example.postproject.domain.dto.PostUpdateDto;
 import com.example.postproject.exception.PostNotInsertException;
 import com.example.postproject.exception.PostNotUpdateException;
 import com.example.postproject.exception.PostsNotFoundException;
@@ -10,6 +12,7 @@ import com.example.postproject.repository.MemberRepository;
 import com.example.postproject.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -52,9 +55,13 @@ public class PostService {
         return postRepository.countPosts(keyword);
     }
 
-    public int insertPost(PostDto dto, String loginId){
+    @Transactional
+    public int insertPost(PostInsertDto dto, String loginId){
         Member member = memberRepository.findMemberByLoginId(loginId);
-        Post post = dto.toEntity(member.getId());
+        Post post = Post.builder().title(dto.getTitle())
+                .content(dto.getContent())
+                .memberId(member.getId())
+                .build();
         int result = postRepository.insertPost(post);
         if (result == 0) {
             throw new PostNotInsertException("해당 게시글이 등록되지 않았습니다.");
@@ -62,7 +69,8 @@ public class PostService {
         return result;
     }
 
-    public int updatePost(PostDto dto, Long id) {
+    @Transactional
+    public int updatePost(PostUpdateDto dto, Long id) {
         Post post = postRepository.findPostById(id);
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
@@ -75,6 +83,12 @@ public class PostService {
         return result;
     }
 
+    @Transactional
+    public void incrementViews(Long id) {
+        postRepository.incrementViews(id);
+    }
+
+    @Transactional
     public int deletePost(Long id) {
         return postRepository.deletePost(id);
     }

@@ -10,6 +10,7 @@ import com.example.postproject.domain.dto.MemberUpdateDto;
 import com.example.postproject.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class MemberService {
         return member;
     }
 
+    @Transactional
     public int insertMember(MemberInsertDto dto){
         Member member = dto.toEntity();
         int result = memberRepository.insertMember(member);
@@ -41,6 +43,7 @@ public class MemberService {
         return result;
     }
 
+    @Transactional
     public int updateMember(MemberUpdateDto dto, String loginId){
         Member member = memberRepository.findMemberByLoginId(loginId);
         member.setPassword(dto.getNewPassword());
@@ -54,6 +57,7 @@ public class MemberService {
         return result;
     }
 
+    @Transactional
     public int deleteMember(String loginId, String password) {
         Member member = memberRepository.findMemberByLoginId(loginId);
 

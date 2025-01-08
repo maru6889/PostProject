@@ -9,6 +9,7 @@ import com.example.postproject.repository.CommentRepository;
 import com.example.postproject.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -43,6 +44,7 @@ public class CommentService {
     }
 
     //댓글 작성
+    @Transactional
     public int insertComment(CommentInsertDto dto, Long postId, String loginId) {
         Member member = memberRepository.findMemberByLoginId(loginId);
         Comment comment = Comment.builder()
@@ -57,6 +59,7 @@ public class CommentService {
     }
 
     //댓글 수정
+    @Transactional
     public int updateComment(Long id, String content, String loginId){
         Member member = memberRepository.findMemberByLoginId(loginId);
         Comment comment = commentRepository.findCommentById(id);
@@ -66,6 +69,7 @@ public class CommentService {
         return commentRepository.updateComment(id, content);
     }
 
+    @Transactional
     public int deleteComment(Long id, String loginId) {
         Member member = memberRepository.findMemberByLoginId(loginId);
         Comment comment = commentRepository.findCommentById(id);

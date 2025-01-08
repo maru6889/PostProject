@@ -2,33 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: head">
     <style>
-        .comment-actions {
-            display: flex;
-            gap: 10px;
-            margin-left: 10px;
-        }
 
-        textarea.edit-content {
-            display: none;
-            width: 100%;
-            height: 80px; /* 조금 더 넓게 */
-            margin-top: 10px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-            font-family: Arial, sans-serif;
-            resize: none; /* 크기 조정 비활성화 */
-            background-color: #f9f9f9;
-            transition: all 0.3s ease; /* 애니메이션 추가 */
-        }
-
-        textarea.edit-content:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-            background-color: #ffffff;
-            outline: none;
-        }
     </style>
 </head>
 <body>
@@ -36,7 +10,6 @@
 <div th:replace="fragments/nav :: nav"></div>
 <div class="main-container">
     <div class="post-detail">
-        <!-- 게시글 정보 -->
         <div class="post-header">
             <h1 th:text="${post.title}">게시글 제목</h1>
             <div class="post-meta">
@@ -47,12 +20,16 @@
         </div>
 
         <div class="post-content">
-            <p th:text="${post.content}">여기에 게시글 내용이 표시됩니다.</p>
+            <p th:text="${post.content}">게시글 내용</p>
+        </div>
+
+        <div class="post-actions">
+            <button class="edit-btn" th:onclick="|location.href='@{/post/edit(id=${post.id})}'|">수정</button>
+            <button class="delete-btn" th:onclick="|deletePost(${post.id})|">삭제</button>
         </div>
     </div>
 
     <div class="comment-section">
-        <!-- 댓글 정보 -->
         <div class="comment-header">
             <h3>댓글</h3>
         </div>
@@ -60,15 +37,13 @@
         <div class="comment-list" th:if="${commentList.size() > 0}">
             <div th:each="comment : ${commentList}" class="comment-item">
                 <div class="comment-meta">
-                    <span th:text="${comment.nickname}">댓글 작성자</span> |
+                    <span th:text="${comment.nickname}">댓글 작성자</span>
                     <span th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">2025-01-01 10:30</span>
                     <span class="comment-actions">
-        <!-- 수정 버튼 -->
         <button class="edit-btn" th:commentId="${comment.id}" th:commentContent="${comment.content}"
                 th:onclick="editComment(this.getAttribute('commentId'), this.getAttribute('commentContent'))">
                                                                                                      수정
         </button>
-                        <!-- 삭제 버튼 -->
         <button class="delete-btn"
                 th:commentId="${comment.id}"
                 th:onclick="deleteComment(this.getAttribute('commentId'))">
@@ -95,7 +70,6 @@
             <p>댓글이 없습니다.</p>
         </div>
 
-        <!-- 댓글 페이징 -->
         <div class="pagination">
             <button th:if="${currentPage > 1}"
                     th:onclick="|location.href='@{/post/detail(id=${post.id}, page=${currentPage - 1})}'|">
@@ -112,11 +86,10 @@
             </button>
         </div>
 
-        <!-- 댓글 작성 -->
         <div class="comment-form">
-            <form th:action="@{/comment/create}" th:object="${commentInsertDto}" method="post">
+            <form th:action="@{/comment/insert}" th:object="${commentInsertDto}" th:method="post">
                 <textarea th:field="*{content}" placeholder="댓글을 입력하세요."></textarea>
-                <input type="hidden" th:field="${post.id}" th:value="${post.id}"/>
+                <input type="hidden" name="postId" th:value="${post.id}"/>
                 <button type="submit">댓글 작성</button>
             </form>
         </div>
@@ -227,6 +200,25 @@
         actions.querySelector('.delete-btn').style.display = 'inline-block';
         actions.querySelector('.confirm-btn').style.display = 'none';
         actions.querySelector('.cancel-btn').style.display = 'none';
+    }
+
+    function deletePost(postId){
+        if(confirm('해당 게시글을 삭제하시겠습니까?')){
+            $.ajax({
+                url: '/post/delete',
+                type: 'POST',
+                contentType: 'application/x-www-form-urlencoded',
+                data: {id: postId},
+                success: function (data){
+                    alert('게시글이 삭제되었습니다.');
+                    window.location.href = '/post/list';
+                },
+                error: function (xhr, status, error){
+                    console.error("Error: ", error);
+                    alert('삭제 실패!');
+                }
+            })
+        }
     }
 </script>
 </body>
