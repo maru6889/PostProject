@@ -56,7 +56,10 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="post : ${posts}"
+    <tr th:if="${posts.size()} == 0">
+        <td colspan="5">게시글이 없습니다.</td>
+    </tr>
+    <tr th:each="post : ${posts}" th:if="${posts.size()} > 0"
         th:onclick="|location.href='@{/post/detail(id=${post.id})}'|"
         style="cursor: pointer;"
     >

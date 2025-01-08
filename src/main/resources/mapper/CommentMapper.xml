@@ -8,7 +8,7 @@
         where post_id = #{postId}
     </select>
     <select id="findCommentById" resultType="Comment">
-        select *
+        select id as id, content as content, member_id as memberId, post_id as postId, created_at as createdAt, updated_at as updatedAt
         from comment
         where id = #{id}
     </select>
@@ -43,7 +43,14 @@
         from comment
         where id = #{id}
     </delete>
-    
+    <resultMap id="CommentResultMap" type="Comment">
+        <id column="id" property="id"/>
+        <result column="content" property="content"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+        <result column="member_id" property="memberId"/>
+        <result column="post_id" property="postId"/>
+    </resultMap>
     <resultMap id="CommentDtoResultMap" type="CommentDto">
         <id column="id" property="id"/>
         <result column="content" property="content"/>

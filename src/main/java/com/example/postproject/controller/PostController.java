@@ -43,7 +43,7 @@ public class PostController {
 
         int totalPosts = postService.countPosts(keyword);
 
-        int totalPages = (int) Math.ceil((double) totalPosts / limit);
+        int totalPages = Math.max((int) Math.ceil((double) totalPosts / limit), 1);
 
         model.addAttribute("posts", posts);
         model.addAttribute("currentPage", page);
@@ -62,7 +62,7 @@ public class PostController {
         int offset = (page - 1) * limit; //조회할 데이터의 시작 위치
         PostDto dto = postService.findPostWithMemberById(id);
         int totalComments = commentService.countCommentsByPostId(id);
-        int totalPages = (int) Math.ceil((double) totalComments / limit);
+        int totalPages = Math.max((int) Math.ceil((double) totalComments / limit), 1);
 
         model.addAttribute("post", dto);
         model.addAttribute("commentInsertDto", new CommentInsertDto());

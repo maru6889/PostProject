@@ -8,7 +8,7 @@
             margin-left: 10px;
         }
 
-        textarea.edit-content  {
+        textarea.edit-content {
             display: none;
             width: 100%;
             height: 80px; /* 조금 더 넓게 */
@@ -57,32 +57,32 @@
             <h3>댓글</h3>
         </div>
 
-        <div class="comment-list">
+        <div class="comment-list" th:if="${commentList.size() > 0}">
             <div th:each="comment : ${commentList}" class="comment-item">
                 <div class="comment-meta">
                     <span th:text="${comment.nickname}">댓글 작성자</span> |
                     <span th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">2025-01-01 10:30</span>
                     <span class="comment-actions">
-                <!-- 수정 버튼 -->
-                <button class="edit-btn" th:commentId="${comment.id}" th:commentContent="${comment.content}"
-                        th:onclick="editComment(this.getAttribute('commentId'), this.getAttribute('commentContent'))">
-                    수정
-                </button>
+        <!-- 수정 버튼 -->
+        <button class="edit-btn" th:commentId="${comment.id}" th:commentContent="${comment.content}"
+                th:onclick="editComment(this.getAttribute('commentId'), this.getAttribute('commentContent'))">
+                                                                                                     수정
+        </button>
                         <!-- 삭제 버튼 -->
-                <button class="delete-btn"
-                        th:commentId="${comment.id}"
-                        th:onclick="deleteComment(this.getAttribute('commentId'))">
-                    삭제
-                </button>
-                        <button class="confirm-btn" style="display: none;" th:commentId="${comment.id}"
-                                th:onclick="confirmEdit(this.getAttribute('commentId'), this)">
-                         확인
-                    </button>
-            <button class="cancel-btn" style="display: none;" th:commentId="${comment.id}"
-                    th:onclick="cancelEdit(this.getAttribute('commentId'), this)">
-                취소
-            </button>
-            </span>
+        <button class="delete-btn"
+                th:commentId="${comment.id}"
+                th:onclick="deleteComment(this.getAttribute('commentId'))">
+                                                                  삭제
+        </button>
+        <button class="confirm-btn" style="display: none;" th:commentId="${comment.id}"
+                th:onclick="confirmEdit(this.getAttribute('commentId'), this)">
+                                                                      확인
+        </button>
+        <button class="cancel-btn" style="display: none;" th:commentId="${comment.id}"
+                th:onclick="cancelEdit(this.getAttribute('commentId'), this)">
+                                                                     취소
+        </button>
+        </span>
                 </div>
                 <div class="comment-content">
                     <p th:text="${comment.content}">댓글 내용</p>
@@ -90,6 +90,9 @@
                               style="display: none;"></textarea>
                 </div>
             </div>
+        </div>
+        <div th:if="${commentList.size()==0}">
+            <p>댓글이 없습니다.</p>
         </div>
 
         <!-- 댓글 페이징 -->
@@ -99,10 +102,10 @@
                 이전
             </button>
             <span th:each="i : ${#numbers.sequence(1, totalPages)}">
-                <button th:onclick="|location.href='@{/post/detail(id=${post.id}, page=${i})}'|"
-                        th:classappend="${i == currentPage} ? 'active' : ''" th:text="${i}">
-                </button>
-            </span>
+        <button th:onclick="|location.href='@{/post/detail(id=${post.id}, page=${i})}'|"
+                th:classappend="${i == currentPage} ? 'active' : ''" th:text="${i}">
+        </button>
+        </span>
             <button th:if="${currentPage < totalPages}"
                     th:onclick="|location.href='@{/post/detail(id=${post.id}, page=${currentPage + 1})}'|">
                 다음
@@ -141,7 +144,7 @@
         if (textarea.style.display === 'none' || textarea.style.display === '') {
             // 수정 모드: textarea 보여주고 버튼 전환
             textarea.style.display = 'block';
-            textarea.value = currentContent;
+            textarea.value = contentElement.textContent;
             contentElement.style.display = 'none';
             editBtn.style.display = 'none';
             deleteBtn.style.display = 'none';
@@ -159,7 +162,11 @@
                 data: JSON.stringify({id: commentId}),
                 success: function (data) {
                     if (data.success) {
-                        document.querySelector(`#edit-content-${commentId}`).closest('.comment-item').remove();
+                        if (data.redirectUrl) {
+                            window.location.href = data.redirectUrl;
+                        } else {
+                            alert('리다이렉트 URL이 없습니다.');
+                        }
                     } else {
                         alert('삭제 실패!');
                     }
@@ -172,7 +179,7 @@
         }
     }
 
-    function confirmEdit(commentId, confirmButton){
+    function confirmEdit(commentId, confirmButton) {
         const textarea = document.getElementById('edit-content-' + commentId);
         const contentElement = textarea.previousElementSibling;
         const newContent = textarea.value;
