@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="head">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +15,15 @@
             <a href="/">Post</a>
         </div>
         <div class="header-right">
-            <a href="#login">로그인</a>
+            <!-- 로그인한 사용자 -->
+            <div sec:authorize="isAuthenticated()">
+                <a href="/mypage" class="btn">마이페이지</a>
+                <a href="/logout" class="btn">로그아웃</a>
+            </div>
+            <!-- 로그인하지 않은 사용자 -->
+            <div sec:authorize="isAnonymous()">
+                <a href="/login" class="btn">로그인</a>
+            </div>
         </div>
     </header>
 </div>

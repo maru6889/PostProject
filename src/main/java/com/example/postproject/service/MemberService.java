@@ -1,12 +1,12 @@
 package com.example.postproject.service;
 
+import com.example.postproject.domain.dto.MemberDto;
 import com.example.postproject.exception.MemberNotDeleteException;
 import com.example.postproject.exception.MemberNotFoundException;
 import com.example.postproject.exception.MemberNotInsertException;
 import com.example.postproject.exception.MemberNotUpdateException;
 import com.example.postproject.domain.Member;
 import com.example.postproject.domain.dto.MemberInsertDto;
-import com.example.postproject.domain.dto.MemberUpdateDto;
 import com.example.postproject.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,7 +44,7 @@ public class MemberService {
     }
 
     @Transactional
-    public int updateMember(MemberUpdateDto dto, String loginId){
+    public int updateMember(MemberDto dto, String loginId){
         Member member = memberRepository.findMemberByLoginId(loginId);
         member.setPassword(dto.getNewPassword());
         member.setNickname(dto.getNickname());

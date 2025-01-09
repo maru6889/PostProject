@@ -14,7 +14,7 @@ create table member
     nickname   varchar(100) not null unique,
     login_id   varchar(100) not null unique,
     password   varchar(255) not null,
-    user_role  enum('admin', 'user') not null default 'user',
+    user_role  enum('ROLE_ADMIN', 'ROLE_USER') not null default 'ROLE_USER',
     created_at datetime default current_timestamp,
     updated_at datetime default current_timestamp on update current_timestamp
 );

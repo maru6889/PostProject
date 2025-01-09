@@ -1,8 +1,8 @@
 package com.example.postproject.service;
 
 import com.example.postproject.domain.Member;
+import com.example.postproject.domain.dto.MemberDto;
 import com.example.postproject.domain.dto.MemberInsertDto;
-import com.example.postproject.domain.dto.MemberUpdateDto;
 import com.example.postproject.exception.MemberNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -60,7 +60,7 @@ class MemberServiceTest {
     @Test
     @Transactional
     public void updateMember(){
-        MemberUpdateDto dto = new MemberUpdateDto();
+        MemberDto dto = new MemberDto();
         dto.setNewPassword("qwerqwer");
         dto.setNickname("qwer123456");
         String loginId = "qwer1234";
