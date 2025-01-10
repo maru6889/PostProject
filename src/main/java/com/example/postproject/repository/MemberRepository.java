@@ -14,6 +14,8 @@ public interface MemberRepository {
 
     Member findMemberByLoginId(String loginId);
 
+    Member findMemberByNickname(String nickname);
+
     //생성
     int insertMember(Member member);
 

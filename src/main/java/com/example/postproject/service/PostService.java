@@ -25,17 +25,17 @@ public class PostService {
 
     public List<Post> findPostsByMemberId(Long memberId) {
         List<Post> posts = postRepository.findPostsByMemberId(memberId);
-        if (posts == null) {
-            throw new PostsNotFoundException("해당 게시글이 존재하지 않습니다.");
-        }
+//        if (posts == null) {
+//            throw new PostsNotFoundException("해당 게시글이 존재하지 않습니다.");
+//        }
         return posts;
     }
 
     public List<Post> findPostsWithPaginationAndFilter(String keyword, int offset, int limit) {
         List<Post> posts = postRepository.findPostsWithPaginationAndFilter(keyword, offset, limit);
-        if (posts == null) {
-            throw new PostsNotFoundException("해당 게시글이 존재하지 않습니다.");
-        }
+//        if (posts == null) {
+//            throw new PostsNotFoundException("해당 게시글이 존재하지 않습니다.");
+//        }
         return posts;
     }
 
@@ -63,9 +63,9 @@ public class PostService {
                 .memberId(member.getId())
                 .build();
         int result = postRepository.insertPost(post);
-        if (result == 0) {
-            throw new PostNotInsertException("해당 게시글이 등록되지 않았습니다.");
-        }
+//        if (result == 0) {
+//            throw new PostNotInsertException("해당 게시글이 등록되지 않았습니다.");
+//        }
         return result;
     }
 
@@ -76,9 +76,9 @@ public class PostService {
         post.setContent(dto.getContent());
 
         int result = postRepository.updatePost(post);
-        if (result == 0) {
-            throw new PostNotUpdateException("해당 게시글이 수정되지 않았습니다.");
-        }
+//        if (result == 0) {
+//            throw new PostNotUpdateException("해당 게시글이 수정되지 않았습니다.");
+//        }
 
         return result;
     }

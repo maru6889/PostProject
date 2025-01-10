@@ -32,7 +32,7 @@ class MemberServiceTest {
         dto.setLoginId("qwer123456");
         dto.setPassword("qwer1234");
         dto.setNickname("qwer123456");
-        dto.toEntity();
+        dto.toEntity("qwer1234");
         int result = memberService.insertMember(dto);
         assertThat(result).isEqualTo(1);
     }

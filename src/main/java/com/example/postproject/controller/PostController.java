@@ -1,11 +1,14 @@
 package com.example.postproject.controller;
 
+import com.example.postproject.domain.Member;
 import com.example.postproject.domain.Post;
 import com.example.postproject.domain.dto.*;
 import com.example.postproject.service.CommentService;
+import com.example.postproject.service.MemberService;
 import com.example.postproject.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,6 +23,7 @@ public class PostController {
 
     private final PostService postService;
     private final CommentService commentService;
+    private final MemberService memberService;
 
     /**
      * @param model:   게시글 리스트
@@ -79,13 +83,14 @@ public class PostController {
     }
 
     @PostMapping("/write")
-    public String savePost(@Valid @ModelAttribute("dto") PostInsertDto dto, BindingResult bindingResult) {
+    public String savePost(@Valid @ModelAttribute("dto") PostInsertDto dto, BindingResult bindingResult, Authentication auth) {
 
         if (bindingResult.hasErrors()) {
             return "post/write";
         }
 
-        postService.insertPost(dto, "qwer1234"); // 추후 로그인 구현 후 변경 필수
+        Member member = memberService.findMemberByLoginId(auth.getName());
+        postService.insertPost(dto, member.getLoginId()); // 추후 로그인 구현 후 변경 필수
         return "redirect:/post/list";
     }
 

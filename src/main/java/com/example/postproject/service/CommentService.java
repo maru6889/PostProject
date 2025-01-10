@@ -28,9 +28,9 @@ public class CommentService {
 
     public Comment findCommentById(Long id)  {
         Comment comment = commentRepository.findCommentById(id);
-        if (comment == null) {
-            throw new CommentNotFoundException("해당 댓글이 존재하지 않습니다.");
-        }
+//        if (comment == null) {
+//            throw new CommentNotFoundException("해당 댓글이 존재하지 않습니다.");
+//        }
         return comment;
 
     }

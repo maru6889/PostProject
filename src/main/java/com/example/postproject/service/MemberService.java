@@ -9,6 +9,7 @@ import com.example.postproject.domain.Member;
 import com.example.postproject.domain.dto.MemberInsertDto;
 import com.example.postproject.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final BCryptPasswordEncoder encoder;
 
     public List<Member> findMembers(){
         List<Member> members = memberRepository.findMembers();
@@ -27,19 +29,23 @@ public class MemberService {
 
     public Member findMemberByLoginId(String loginId) {
         Member member = memberRepository.findMemberByLoginId(loginId);
-        if (member == null) {
-            throw new MemberNotFoundException("해당 회원을 찾을 수 없습니다.");
-        }
+//        if (member == null) {
+//            throw new MemberNotFoundException("해당 회원을 찾을 수 없습니다.");
+//        }
         return member;
+    }
+
+    public Member findMemberByNickname(String nickname) {
+        return memberRepository.findMemberByNickname(nickname);
     }
 
     @Transactional
     public int insertMember(MemberInsertDto dto){
-        Member member = dto.toEntity();
+        Member member = dto.toEntity(encoder.encode(dto.getPassword()));
         int result = memberRepository.insertMember(member);
-        if (result == 0) {
-            throw new MemberNotInsertException("회원 가입이 이루어지지 않았습니다.");
-        }
+//        if (result == 0) {
+//            throw new MemberNotInsertException("회원 가입이 이루어지지 않았습니다.");
+//        }
         return result;
     }
 
@@ -50,9 +56,9 @@ public class MemberService {
         member.setNickname(dto.getNickname());
 
         int result = memberRepository.updateMember(loginId, member);
-        if (result == 0) {
-            throw new MemberNotUpdateException("회원 수정이 이루어지지 않았습니다.");
-        }
+//        if (result == 0) {
+//            throw new MemberNotUpdateException("회원 수정이 이루어지지 않았습니다.");
+//        }
 
         return result;
     }
@@ -67,9 +73,9 @@ public class MemberService {
             result = memberRepository.deleteMember(loginId);
         }
 
-        if (result == 0) {
-            throw new MemberNotDeleteException("회원 탈퇴가 이루어지지 않았습니다.");
-        }
+//        if (result == 0) {
+//            throw new MemberNotDeleteException("회원 탈퇴가 이루어지지 않았습니다.");
+//        }
 
         return result;
     }
