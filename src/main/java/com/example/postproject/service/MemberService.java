@@ -52,9 +52,12 @@ public class MemberService {
     @Transactional
     public int updateMember(MemberDto dto, String loginId){
         Member member = memberRepository.findMemberByLoginId(loginId);
-        member.setPassword(dto.getNewPassword());
-        member.setNickname(dto.getNickname());
-
+        if (!dto.getNickname().isBlank() || !dto.getNickname().isEmpty()) {
+            member.setNickname(dto.getNickname());
+        }
+        if (!dto.getNewPassword().isEmpty() || !dto.getNewPassword().isBlank()) {
+            member.setPassword(encoder.encode(dto.getNewPassword()));
+        }
         int result = memberRepository.updateMember(loginId, member);
 //        if (result == 0) {
 //            throw new MemberNotUpdateException("회원 수정이 이루어지지 않았습니다.");
@@ -64,19 +67,7 @@ public class MemberService {
     }
 
     @Transactional
-    public int deleteMember(String loginId, String password) {
-        Member member = memberRepository.findMemberByLoginId(loginId);
-
-        int result = 0;
-
-        if (member.getPassword().equals(password)) {
-            result = memberRepository.deleteMember(loginId);
-        }
-
-//        if (result == 0) {
-//            throw new MemberNotDeleteException("회원 탈퇴가 이루어지지 않았습니다.");
-//        }
-
-        return result;
+    public int deleteMember(String loginId) {
+        return memberRepository.deleteMember(loginId);
     }
 }

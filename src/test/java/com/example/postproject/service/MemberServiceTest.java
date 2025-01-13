@@ -76,7 +76,7 @@ class MemberServiceTest {
     public void deleteMember(){
         String loginId = "qwer1234";
         String password = "qwer1234";
-        memberService.deleteMember(loginId, password);
+        memberService.deleteMember(loginId);
 
         assertThrows(MemberNotFoundException.class, () -> {
             Member member = memberService.findMemberByLoginId(loginId);

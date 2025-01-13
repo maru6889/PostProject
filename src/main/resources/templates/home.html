@@ -3,6 +3,9 @@
 <head th:replace="fragments/header :: head">
 </head>
 <body>
+<script th:if="${message}" th:inline="javascript">
+    alert([[${message}]]);
+</script>
 <div th:replace="fragments/header :: header">
 </div>
 <div th:replace="fragments/nav :: nav">

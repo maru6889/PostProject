@@ -14,5 +14,6 @@ public class CommentDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String nickname;
+    private String loginId;
     private Long memberId;
 }

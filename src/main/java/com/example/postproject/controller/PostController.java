@@ -8,6 +8,7 @@ import com.example.postproject.service.MemberService;
 import com.example.postproject.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/post")
+@Slf4j
 public class PostController {
 
     private final PostService postService;
@@ -63,7 +65,12 @@ public class PostController {
         postService.incrementViews(id);
 
         int offset = (page - 1) * limit; //조회할 데이터의 시작 위치
+//        log.info("id: {}", id);
         PostDto dto = postService.findPostWithMemberById(id);
+//        log.info("dto: {}", dto);
+//        log.info("updatedAt: {}", dto.getUpdatedAt());
+//        log.info("dto.nickname: {}", dto.getNickname());
+//        log.info("dto.loginId: {}", dto.getLoginId());
         int totalComments = commentService.countCommentsByPostId(id);
         int totalPages = Math.max((int) Math.ceil((double) totalComments / limit), 1);
 
@@ -76,7 +83,7 @@ public class PostController {
     }
 
     @GetMapping("/write")
-    public String postWritePage(Model model) {
+    public String postWritePage(Model model, Authentication auth) {
         PostInsertDto dto = new PostInsertDto();
         model.addAttribute("dto", dto);
         return "post/write";

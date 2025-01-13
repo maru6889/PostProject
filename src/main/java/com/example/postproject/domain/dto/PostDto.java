@@ -16,13 +16,6 @@ public class PostDto {
     private int views;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private String loginId;
     private String nickname;
-
-    public Post toEntity(Long memberId) {
-        return Post.builder()
-                .title(title)
-                .content(content)
-                .memberId(memberId)
-                .build();
-    }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/header :: head">
     <style>
 
@@ -22,10 +22,14 @@
         <div class="post-content">
             <p th:text="${post.content}">게시글 내용</p>
         </div>
+<!--        <p th:text="${post.loginId}"></p>-->
+<!--        <p th:text="${#authentication.name}"></p>-->
 
         <div class="post-actions">
-            <button class="edit-btn" th:onclick="|location.href='@{/post/edit(id=${post.id})}'|">수정</button>
-            <button class="delete-btn" th:onclick="|deletePost(${post.id})|">삭제</button>
+            <div th:if="${#authentication.name == post.loginId}">
+                <button class="edit-btn" th:onclick="|location.href='@{/post/edit(id=${post.id})}'|">수정</button>
+                <button class="delete-btn" th:onclick="|deletePost(${post.id})|">삭제</button>
+            </div>
         </div>
     </div>
 
@@ -40,8 +44,10 @@
                     <span th:text="${comment.nickname}">댓글 작성자</span>
                     <span th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">2025-01-01 10:30</span>
                     <span class="comment-actions">
-        <button class="edit-btn" th:commentId="${comment.id}" th:commentContent="${comment.content}"
-                th:onclick="editComment(this.getAttribute('commentId'), this.getAttribute('commentContent'))">
+
+                        <span th:if="${#authentication.name == comment.loginId}">
+                            <button class="edit-btn" th:commentId="${comment.id}" th:commentContent="${comment.content}"
+                                    th:onclick="editComment(this.getAttribute('commentId'), this.getAttribute('commentContent'))">
                                                                                                      수정
         </button>
         <button class="delete-btn"
@@ -49,6 +55,8 @@
                 th:onclick="deleteComment(this.getAttribute('commentId'))">
                                                                   삭제
         </button>
+                        </span>
+
         <button class="confirm-btn" style="display: none;" th:commentId="${comment.id}"
                 th:onclick="confirmEdit(this.getAttribute('commentId'), this)">
                                                                       확인
@@ -202,18 +210,18 @@
         actions.querySelector('.cancel-btn').style.display = 'none';
     }
 
-    function deletePost(postId){
-        if(confirm('해당 게시글을 삭제하시겠습니까?')){
+    function deletePost(postId) {
+        if (confirm('해당 게시글을 삭제하시겠습니까?')) {
             $.ajax({
                 url: '/post/delete',
                 type: 'POST',
                 contentType: 'application/x-www-form-urlencoded',
                 data: {id: postId},
-                success: function (data){
+                success: function (data) {
                     alert('게시글이 삭제되었습니다.');
                     window.location.href = '/post/list';
                 },
-                error: function (xhr, status, error){
+                error: function (xhr, status, error) {
                     console.error("Error: ", error);
                     alert('삭제 실패!');
                 }

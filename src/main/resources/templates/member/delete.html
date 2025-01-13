@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head">
 </head>
 <body>
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/nav :: nav"></div>
+<div class="delete-container">
+    <h2>회원 탈퇴</h2>
+    <form th:action="@{/member/delete}" th:method="post"  th:object="${memberDto}">
+        <div class="form-group">
+            <label for="password"></label>
+            <input type="password" id="password" th:field="${memberDto.password}" placeholder="비밀번호를 입력하세요">
+            <p th:if="${#fields.hasErrors('password')}" th:errors="${memberDto.password}" class="error-message"></p>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-delete">탈퇴</button>
+            <button type="button" th:onclick="|location.href='@{/member/myinfo}'|" class="btn btn-cancel">취소</button>
+        </div>
+    </form>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
 
 </body>
 </html>

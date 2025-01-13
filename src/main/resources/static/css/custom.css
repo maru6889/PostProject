@@ -674,3 +674,108 @@ textarea.edit-content:focus {
 .form-actions .btn-cancel:hover {
     background-color: #a71d2a;
 }
+
+.info-container {
+    width: 60%;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.info-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.info-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column; /* 수직 정렬 */
+    align-items: center; /* 수평 가운데 정렬 */
+    width: 100%; /* 그룹 전체 너비를 부모 컨테이너에 맞춤 */
+}
+
+.info-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    text-align: left; /* 텍스트 중앙 정렬 */
+    width: 30%; /* input과 동일한 너비 */
+}
+
+.info-group input {
+    width: 30%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: white;
+}
+
+.btn-container {
+    text-align: center;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* 버튼 간격 추가 */
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-edit {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-edit:hover {
+    background-color: #0056b3;
+}
+
+.btn-delete {
+    background-color: #dc3545; /* 빨간색 */
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #b02a37;
+}
+
+.btn-cancel {
+    background-color: #6c757d; /* 회색 배경 */
+    color: #fff; /* 흰색 글씨 */
+    border: none; /* 테두리 제거 */
+    border-radius: 5px; /* 모서리를 둥글게 */
+    padding: 10px 20px; /* 여백 */
+    font-size: 16px; /* 글자 크기 */
+    cursor: pointer; /* 커서를 손 모양으로 */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* 애니메이션 */
+}
+
+.btn-cancel:hover {
+    background-color: #5a6268; /* 마우스를 올렸을 때 더 어두운 회색 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 마우스를 올렸을 때 그림자 */
+}
+
+.delete-container {
+    width: 50%;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.delete-container h2 {
+    margin-bottom: 20px;
+}

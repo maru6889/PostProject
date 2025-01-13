@@ -57,6 +57,7 @@
         <result column="created_at" property="createdAt"/>
         <result column="updated_at" property="updatedAt"/>
         <result column="nickname" property="nickname"/>
+        <result column="login_id" property="loginId"/>
         <result column="member_id" property="memberId"/>
     </resultMap>
 </mapper>

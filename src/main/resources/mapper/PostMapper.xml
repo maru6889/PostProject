@@ -109,6 +109,7 @@
         <result column="views" property="views"/>
         <result column="created_at" property="createdAt"/>
         <result column="updated_at" property="updatedAt"/>
+        <result column="login_id" property="loginId"/>
         <result column="nickname" property="nickname"/>
     </resultMap>
 </mapper>

@@ -3,18 +3,18 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.postproject.repository.MemberRepository">
     <select id="findMembers" resultType="Member">
-        select id as id, nickname as nickname, login_id as loginId, password as password, user_role as userRole, created_at as createdAt, updated_at as updatedAt
+        select *
         from member
     </select>
 
-    <select id="findMemberByLoginId" resultType="Member">
-        select id as id, nickname as nickname, login_id as loginId, password as password, user_role as userRole, created_at as createdAt, updated_at as updatedAt
+    <select id="findMemberByLoginId" resultMap="MemberResultMap">
+        select *
         from member
         where login_id = #{loginId}
     </select>
 
-    <select id="findMemberByNickname" resultType="Member">
-        select id as id, nickname as nickname, login_id as loginId, password as password, user_role as userRole, created_at as createdAt, updated_at as updatedAt
+    <select id="findMemberByNickname" resultMap="MemberResultMap">
+        select *
         from member
         where nickname = #{nickname}
     </select>
@@ -42,4 +42,14 @@
         from member
         where login_id = #{loginId}
     </delete>
+
+    <resultMap id="MemberResultMap" type="Member">
+        <id column="id" property="id"/>
+        <result column="nickname" property="nickname"/>
+        <result column="login_id" property="loginId"/>
+        <result column="password" property="password"/>
+        <result column="user_role" property="userRole"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
 </mapper>
