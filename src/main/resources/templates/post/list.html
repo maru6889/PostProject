@@ -81,7 +81,7 @@
     <span th:with="startPage=${(currentPage - 1) / 10 * 10 + 1},
                    endPage=${(startPage + 9) > totalPages ? totalPages : (startPage + 9)}">
         <span th:each="i : ${#numbers.sequence(startPage, endPage)}">
-            <button th:onclick="|location.href='@{/post/list(page=${i}, keyword=${keyword})}'|"
+            <button th:onclick="|location.href='@{/post/list(page=${i}, keyword=${postSearchDto.keyword})}'|"
                     th:text="${i}"
                     th:classappend="${i == currentPage} ? 'active' : ''">
             </button>
@@ -89,7 +89,7 @@
     </span>
 
     <button th:if="${currentPage < totalPages}"
-            th:onclick="|location.href='@{/post/list(page=${currentPage + 1}, keyword=${keyword})}'|">
+            th:onclick="|location.href='@{/post/list(page=${currentPage + 1}, keyword=${postSearchDto.keyword})}'|">
         다음
     </button>
 </div>
