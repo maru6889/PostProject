@@ -73,16 +73,19 @@
 </table>
 
 <div class="pagination">
-    <button th:if="${currentPage} > 1"
+    <button th:if="${currentPage > 1}"
             th:onclick="|location.href='@{/post/list(page=${currentPage-1}, keyword=${keyword})}'|">
         이전
     </button>
 
-    <span th:each="i : ${#numbers.sequence(1, totalPages)}">
-        <button th:onclick="|location.href='@{/post/list(page=${i}, keyword=${keyword})}'|"
-                th:text="${i}"
-                th:classappend="${i == currentPage} ? 'active' : ''">
-        </button>
+    <span th:with="startPage=${(currentPage - 1) / 10 * 10 + 1},
+                   endPage=${(startPage + 9) > totalPages ? totalPages : (startPage + 9)}">
+        <span th:each="i : ${#numbers.sequence(startPage, endPage)}">
+            <button th:onclick="|location.href='@{/post/list(page=${i}, keyword=${keyword})}'|"
+                    th:text="${i}"
+                    th:classappend="${i == currentPage} ? 'active' : ''">
+            </button>
+        </span>
     </span>
 
     <button th:if="${currentPage < totalPages}"

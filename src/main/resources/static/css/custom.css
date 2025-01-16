@@ -84,10 +84,11 @@ footer {
     background-color: #f1f1f1;
     text-align: center;
     padding: 10px;
-    position: fixed;
+    position: relative;
     bottom: 0;
     width: 100%;
     border-top: 1px solid #ccc;
+    margin-top: 20px;
 }
 
 form {
@@ -119,6 +120,7 @@ form button:hover {
     justify-content: center;
     align-items: center;
     margin-top: auto;
+    margin-bottom: 50px;
     gap: 5px;
 }
 
