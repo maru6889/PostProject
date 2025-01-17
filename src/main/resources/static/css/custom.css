@@ -81,14 +81,16 @@ nav a:hover {
 }
 
 footer {
-    background-color: #f1f1f1;
-    text-align: center;
-    padding: 10px;
-    position: relative;
+    position: fixed;
     bottom: 0;
+    left: 0;
     width: 100%;
-    border-top: 1px solid #ccc;
-    margin-top: 20px;
+    height: 40px; /* 푸터 높이 줄이기 */
+    background-color: #f8f9fa;
+    text-align: center;
+    padding: 5px; /* 기존 10px → 5px로 줄이기 */
+    border-top: 1px solid #ddd;
+    font-size: 0.9em; /* 글자 크기 줄이기 */
 }
 
 form {
@@ -120,7 +122,7 @@ form button:hover {
     justify-content: center;
     align-items: center;
     margin-top: auto;
-    margin-bottom: 50px;
+    margin-bottom: 60px;
     gap: 5px;
 }
 
