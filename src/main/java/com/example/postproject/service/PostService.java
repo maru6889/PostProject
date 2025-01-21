@@ -1,6 +1,7 @@
 package com.example.postproject.service;
 
 import com.example.postproject.domain.dto.PostInsertDto;
+import com.example.postproject.domain.dto.PostSearchDto;
 import com.example.postproject.domain.dto.PostUpdateDto;
 import com.example.postproject.exception.PostNotInsertException;
 import com.example.postproject.exception.PostNotUpdateException;
@@ -39,8 +40,8 @@ public class PostService {
         return posts;
     }
 
-    public List<PostDto> findPostsWithMemberAndPaginationAndFilter(String keyword, int offset, int limit) {
-        return postRepository.findPostsWithMemberAndPaginationAndFilter(keyword, offset, limit);
+    public List<PostDto> findPostsWithMemberAndPaginationAndFilter(PostSearchDto searchDto) {
+        return postRepository.findPostsWithMemberAndPaginationAndFilter(searchDto);
     }
 
     public Post findPostById(Long id) {
@@ -51,8 +52,8 @@ public class PostService {
         return postRepository.findPostWithMemberById(id);
     }
 
-    public int countPosts(String keyword){
-        return postRepository.countPosts(keyword);
+    public int countPosts(String keyword, Long categoryId){
+        return postRepository.countPosts(keyword, categoryId);
     }
 
     @Transactional
@@ -61,6 +62,7 @@ public class PostService {
         Post post = Post.builder().title(dto.getTitle())
                 .content(dto.getContent())
                 .memberId(member.getId())
+                .categoryId(dto.getCategoryId())
                 .build();
         int result = postRepository.insertPost(post);
 //        if (result == 0) {

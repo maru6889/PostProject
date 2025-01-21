@@ -27,6 +27,59 @@ public class PostController {
     private final CommentService commentService;
     private final MemberService memberService;
 
+    @GetMapping("/search")
+    public String searchPost(Model model,
+                             @RequestParam(required = false, name = "keyword") String keyword,
+                             @RequestParam(required = false, defaultValue = "all", name = "searchType") String searchType,
+                             @RequestParam(required = false, name = "categoryId") Long categoryId,
+                             @RequestParam(required = false, defaultValue = "1", name = "page") int page,
+                             @RequestParam(required = false, defaultValue = "10", name = "limit") int limit){
+        PostSearchDto searchDto = new PostSearchDto();
+        int offset = (page - 1) * limit; //조회할 데이터의 시작 위치
+        searchDto.setSearchType(searchType);
+        searchDto.setCategoryId(categoryId);
+        searchDto.setKeyword(keyword);
+        searchDto.setOffset(offset);
+        searchDto.setLimit(limit);
+
+        List<PostDto> posts = postService.findPostsWithMemberAndPaginationAndFilter(searchDto);
+        int totalPosts = postService.countPosts(keyword, null);
+        int totalPages = Math.max((int) Math.ceil((double) totalPosts / limit), 1);
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("postSearchDto", searchDto);
+
+        return "post/list";
+    }
+
+    @GetMapping("/list")
+    public String getAllPost(
+            Model model,
+            @RequestParam(required = false, name = "keyword") String keyword,
+            @RequestParam(required = false, defaultValue = "1", name = "page") int page,
+            @RequestParam(required = false, defaultValue = "10", name = "limit") int limit)  {
+
+        PostSearchDto searchDto = new PostSearchDto();
+        int offset = (page - 1) * limit; //조회할 데이터의 시작 위치
+        searchDto.setKeyword(keyword);
+        searchDto.setOffset(offset);
+        searchDto.setLimit(limit);
+        List<PostDto> posts = postService.findPostsWithMemberAndPaginationAndFilter(searchDto);
+
+        int totalPosts = postService.countPosts(keyword, null);
+
+        int totalPages = Math.max((int) Math.ceil((double) totalPosts / limit), 1);
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("postSearchDto", searchDto);
+
+        return "post/list";
+    }
+
     /**
      * @param model:   게시글 리스트
      * @param keyword: 검색할 단어
@@ -34,24 +87,86 @@ public class PostController {
      * @param page:    현재 페이지 번호
      * @return
      */
-    @GetMapping("/list")
-    public String postListPage(
+    @GetMapping("/list/notice")
+    public String postListNoticePage(
             Model model,
             @RequestParam(required = false, name = "keyword") String keyword,
             @RequestParam(required = false, defaultValue = "1", name = "page") int page,
             @RequestParam(required = false, defaultValue = "10", name = "limit") int limit) {
 
+        Long categoryId = 1L;
+        PostSearchDto searchDto = new PostSearchDto();
         int offset = (page - 1) * limit; //조회할 데이터의 시작 위치
-        List<PostDto> posts = postService.findPostsWithMemberAndPaginationAndFilter(keyword, offset, limit);
+        searchDto.setKeyword(keyword);
+        searchDto.setOffset(offset);
+        searchDto.setLimit(limit);
+        searchDto.setCategoryId(categoryId);
+        List<PostDto> posts = postService.findPostsWithMemberAndPaginationAndFilter(searchDto);
 
-        int totalPosts = postService.countPosts(keyword);
+        int totalPosts = postService.countPosts(keyword, categoryId);
 
         int totalPages = Math.max((int) Math.ceil((double) totalPosts / limit), 1);
 
         model.addAttribute("posts", posts);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
-        model.addAttribute("postSearchDto", new PostSearchDto(keyword));
+        model.addAttribute("postSearchDto", searchDto);
+
+        return "post/list";
+    }
+
+    @GetMapping("/list/community")
+    public String postListCommunityPage(
+            Model model,
+            @RequestParam(required = false, name = "keyword") String keyword,
+            @RequestParam(required = false, defaultValue = "1", name = "page") int page,
+            @RequestParam(required = false, defaultValue = "10", name = "limit") int limit) {
+
+        Long categoryId = 2L;
+        PostSearchDto searchDto = new PostSearchDto();
+        int offset = (page - 1) * limit; //조회할 데이터의 시작 위치
+        searchDto.setKeyword(keyword);
+        searchDto.setOffset(offset);
+        searchDto.setLimit(limit);
+        searchDto.setCategoryId(categoryId);
+        List<PostDto> posts = postService.findPostsWithMemberAndPaginationAndFilter(searchDto);
+
+        int totalPosts = postService.countPosts(keyword, categoryId);
+
+        int totalPages = Math.max((int) Math.ceil((double) totalPosts / limit), 1);
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("postSearchDto", searchDto);
+
+        return "post/list";
+    }
+
+    @GetMapping("/list/question")
+    public String postListQuestionPage(
+            Model model,
+            @RequestParam(required = false, name = "keyword") String keyword,
+            @RequestParam(required = false, defaultValue = "1", name = "page") int page,
+            @RequestParam(required = false, defaultValue = "10", name = "limit") int limit) {
+
+        Long categoryId = 3L;
+        PostSearchDto searchDto = new PostSearchDto();
+        int offset = (page - 1) * limit; //조회할 데이터의 시작 위치
+        searchDto.setKeyword(keyword);
+        searchDto.setOffset(offset);
+        searchDto.setLimit(limit);
+        searchDto.setCategoryId(categoryId);
+        List<PostDto> posts = postService.findPostsWithMemberAndPaginationAndFilter(searchDto);
+
+        int totalPosts = postService.countPosts(keyword, categoryId);
+
+        int totalPages = Math.max((int) Math.ceil((double) totalPosts / limit), 1);
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("postSearchDto", searchDto);
 
         return "post/list";
     }
@@ -92,11 +207,16 @@ public class PostController {
     @PostMapping("/write")
     public String savePost(@Valid @ModelAttribute("dto") PostInsertDto dto, BindingResult bindingResult, Authentication auth) {
 
+        Member member = memberService.findMemberByLoginId(auth.getName());
         if (bindingResult.hasErrors()) {
             return "post/write";
         }
 
-        Member member = memberService.findMemberByLoginId(auth.getName());
+        if (dto.getCategoryId() == 1L && !member.getUserRole().name().equals("ROLE_ADMIN")) {
+            bindingResult.reject("categoryError", "공지사항은 관리자만 작성할 수 있습니다.");
+            return "post/write";
+        }
+
         postService.insertPost(dto, member.getLoginId()); // 추후 로그인 구현 후 변경 필수
         return "redirect:/post/list";
     }

@@ -14,4 +14,6 @@ public class PostUpdateDto {
 
     @NotBlank(message = "내용을 작성해주세요.")
     private String content;
+
+    private Long categoryId;
 }

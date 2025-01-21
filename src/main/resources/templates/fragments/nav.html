@@ -7,8 +7,11 @@
 
 <div th:fragment="nav">
     <nav>
-        <a href="/">홈</a>
-        <a href="/post/list">자유게시판</a>
+        <a th:href="@{/}" th:classappend="${currentURI == '/' ? 'active' : ''}">홈</a>
+        <a th:href="@{/post/list}" th:classappend="${currentURI == '/post/list' ? 'active' : ''}">전체 글 보기</a>
+        <a th:href="@{/post/list/notice}" th:classappend="${postSearchDto != null and postSearchDto.categoryId == 1} ? 'active' : ''">공지사항</a>
+        <a th:href="@{/post/list/community}" th:classappend="${postSearchDto != null and postSearchDto.categoryId == 2} ? 'active' : ''">자유게시판</a>
+        <a th:href="@{/post/list/question}" th:classappend="${postSearchDto != null and postSearchDto.categoryId == 3} ? 'active' : ''">질문게시판</a>
         <!--    <a href="#services">Services</a>-->
         <!--    <a href="#contact">Contact</a>-->
     </nav>

@@ -9,6 +9,16 @@
 <div class="form-container">
     <h2>게시글 작성</h2>
     <form th:action="@{/post/write}" th:object="${dto}" th:method="post">
+
+        <div class="form-group">
+            <label for="category">카테고리 선택:</label>
+            <select id="category" th:field="${dto.categoryId}">
+                <!-- ROLE_ADMIN인 경우 모든 카테고리 선택 가능 -->
+                <option th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" value="1">공지사항</option>
+                <option value="2" selected>자유게시판</option>
+                <option value="3">질문게시판</option>
+            </select>
+        </div>
         <!-- 제목 -->
         <div class="form-group">
             <label for="title">제목</label>

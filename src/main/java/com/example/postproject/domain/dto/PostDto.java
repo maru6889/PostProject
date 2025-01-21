@@ -16,6 +16,7 @@ public class PostDto {
     private int views;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Long categoryId;
     private String loginId;
     private String nickname;
 }

@@ -17,4 +17,5 @@ public class Post {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Long memberId;
+    private Long categoryId;
 }

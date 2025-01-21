@@ -65,6 +65,11 @@ nav a:hover {
     border-radius: 5px;
 }
 
+nav a.active {
+    color: #007BFF;
+    border-bottom: 2px solid #007BFF;
+}
+
 .main-content {
     padding: 20px;
     text-align: center;
@@ -782,4 +787,76 @@ textarea.edit-content:focus {
 
 .delete-container h2 {
     margin-bottom: 20px;
+}
+
+/* 검색 폼 컨테이너 */
+.search-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* 요소 간 간격 */
+    margin-bottom: 20px; /* 아래쪽 여백 */
+}
+
+/* 검색 입력 필드 */
+.search-form input[type="text"] {
+    width: 250px;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.search-form input[type="text"]:focus {
+    border-color: #007BFF;
+}
+
+/* 드롭다운 스타일 */
+.search-form select {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.search-form select:hover,
+.search-form select:focus {
+    border-color: #007BFF;
+}
+
+/* 검색 버튼 스타일 */
+.search-form button {
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.search-form button:hover {
+    background-color: #0056b3;
+}
+
+/* 반응형 디자인 */
+@media screen and (max-width: 600px) {
+    .search-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-form input,
+    .search-form select,
+    .search-form button {
+        width: 100%;
+    }
 }
