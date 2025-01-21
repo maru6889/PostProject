@@ -4,6 +4,7 @@ import com.example.postproject.domain.Member;
 import com.example.postproject.domain.Post;
 import com.example.postproject.domain.dto.*;
 import com.example.postproject.service.CommentService;
+import com.example.postproject.service.LikeService;
 import com.example.postproject.service.MemberService;
 import com.example.postproject.service.PostService;
 import jakarta.validation.Valid;
@@ -26,6 +27,7 @@ public class PostController {
     private final PostService postService;
     private final CommentService commentService;
     private final MemberService memberService;
+    private final LikeService likeService;
 
     @GetMapping("/search")
     public String searchPost(Model model,
@@ -174,10 +176,20 @@ public class PostController {
     @GetMapping("/detail")
     public String postDetailPage(Model model, @RequestParam(name = "id") Long id,
                                  @RequestParam(required = false, name = "page", defaultValue = "1") int page,
-                                 @RequestParam(required = false, name = "limit", defaultValue = "5") int limit) {
+                                 @RequestParam(required = false, name = "limit", defaultValue = "5") int limit,
+                                 Authentication auth) {
+
 
 
         postService.incrementViews(id);
+        boolean userLiked = false;
+        int likeCount = likeService.getLikeCountByPostId(id);
+
+        if (auth != null && auth.isAuthenticated()) {
+            String loginId = auth.getName();
+            Long memberId = memberService.findMemberByLoginId(loginId).getId();
+            userLiked = likeService.isLikeExist(id, memberId);
+        }
 
         int offset = (page - 1) * limit; //조회할 데이터의 시작 위치
 //        log.info("id: {}", id);
@@ -194,6 +206,8 @@ public class PostController {
         model.addAttribute("commentList", commentService.findCommentWithMemberByPostId(id, limit, offset));
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
+        model.addAttribute("likeCount", likeCount);
+        model.addAttribute("userLiked", userLiked);
         return "post/detail";
     }
 
