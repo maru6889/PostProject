@@ -12,10 +12,11 @@
     <div class="post-detail">
         <div class="post-header">
             <h1 th:text="${post.title}">게시글 제목</h1>
-            <div class="post-meta">
+            <div class="post-meta" th:object="${post}">
                 작성자: <span th:text="${post.nickname}">작성자</span> |
                 작성일: <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">2025-01-01 10:00</span> |
-                조회수: <span th:text="${post.views}">123</span>
+                조회수: <span th:text="${post.views}">123</span> |
+                <span th:text="${post.categoryName}">게시판</span>
                 <span class="like-container">
         <button id="like-button" onclick="toggleLike()" class="like-btn">
             <img id="like-icon"
@@ -105,7 +106,7 @@
         </div>
 
         <div class="comment-form">
-            <form th:action="@{/comment/insert}" th:object="${commentInsertDto}" th:method="post">
+            <form id="commentForm" th:action="@{/comment/insert}" th:object="${commentInsertDto}" th:method="post" onsubmit="return validateComment()">
                 <textarea th:field="*{content}" placeholder="댓글을 입력하세요."></textarea>
                 <input type="hidden" name="postId" th:value="${post.id}"/>
                 <button type="submit">댓글 작성</button>
@@ -269,6 +270,15 @@
                 console.error("Error:", error);
                 alert("좋아요 요청 중 오류 발생");
             });
+    }
+
+    function validateComment() {
+        let comment = document.getElementById("content").value.trim(); // 공백 제거
+        if (comment === "") {
+            alert("댓글을 입력해 주세요.");
+            return false; // 제출 방지
+        }
+        return true; // 정상 제출
     }
 </script>
 </body>

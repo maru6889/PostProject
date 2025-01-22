@@ -23,9 +23,10 @@
     </select>
 
     <select id="findPostsWithMemberAndPaginationAndFilter" resultMap="PostDtoResultMap" parameterType="PostSearchDto">
-        select distinct p.id, p.title, p.content, p.views, p.created_at, p.updated_at, m.nickname
+        select distinct p.id, p.title, p.content, p.views, p.created_at, p.updated_at, m.nickname, ca.name as category_name
         from post p
         join member m on p.member_id = m.id
+        left join category ca on p.category_id = ca.id
         left join comment c on p.id = c.post_id
         <where>
             <if test="keyword != null and keyword != ''">
@@ -64,10 +65,10 @@
     </select>
 
     <select id="findPostWithMemberById" resultMap="PostDtoResultMap">
-        select *
+        select p.id, p.title, p.content, p.views, p.created_at, p.updated_at, p.category_id, m.login_id, m.nickname, c.name as category_name
         from post p
-                 join member m
-                      on p.member_id = m.id
+        join member m on p.member_id = m.id
+        left join category c on p.category_id = c.id
         where p.id = #{id}
     </select>
 
@@ -135,5 +136,6 @@
         <result column="category_id" property="categoryId"/>
         <result column="login_id" property="loginId"/>
         <result column="nickname" property="nickname"/>
+        <result column="category_name" property="categoryName"/>
     </resultMap>
 </mapper>

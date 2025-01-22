@@ -1,6 +1,5 @@
 package com.example.postproject.domain.dto;
 
-import com.example.postproject.domain.Post;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,4 +18,5 @@ public class PostDto {
     private Long categoryId;
     private String loginId;
     private String nickname;
+    private String categoryName;
 }

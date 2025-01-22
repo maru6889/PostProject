@@ -194,7 +194,7 @@ public class PostController {
         int offset = (page - 1) * limit; //조회할 데이터의 시작 위치
 //        log.info("id: {}", id);
         PostDto dto = postService.findPostWithMemberById(id);
-//        log.info("dto: {}", dto);
+//        log.info("dto: {}", dto.getCategoryName());
 //        log.info("updatedAt: {}", dto.getUpdatedAt());
 //        log.info("dto.nickname: {}", dto.getNickname());
 //        log.info("dto.loginId: {}", dto.getLoginId());
