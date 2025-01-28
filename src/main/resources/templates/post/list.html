@@ -38,28 +38,33 @@
 </table>
 
 <div class="pagination">
-    <button th:if="${currentPage > 1}"
-            th:onclick="|location.href='@{/post/list(page=${currentPage-1}, keyword=${postSearchDto.keyword}, categoryId=${postSearchDto.categoryId})}'|">
-        이전
-    </button>
+    <!-- 이전 버튼 -->
+    <a th:if="${currentPage > 1}"
+       th:href="@{(${postSearchDto.keyword != null and postSearchDto.keyword != ''} ? '/post/search' : '/post/list')(page=${currentPage - 1}, keyword=${postSearchDto.keyword}, searchType=${postSearchDto.searchType}, categoryId=${postSearchDto.categoryId})}"
+       class="pagination-button">
+        ◀ 이전
+    </a>
 
+    <!-- 페이지 번호 -->
     <span th:with="startPage=${(currentPage - 1) / 10 * 10 + 1},
                    endPage=${(startPage + 9) > totalPages ? totalPages : (startPage + 9)}">
-        <span th:each="i : ${#numbers.sequence(startPage, endPage)}">
-            <button th:onclick="|location.href='@{/post/list(page=${i}, keyword=${postSearchDto.keyword}, categoryId=${postSearchDto.categoryId})}'|"
-                    th:text="${i}"
-                    th:classappend="${i == currentPage} ? 'active' : ''">
-            </button>
-        </span>
+        <a th:each="i : ${#numbers.sequence(startPage, endPage)}"
+           th:href="@{(${postSearchDto.keyword != null and postSearchDto.keyword != ''} ? '/post/search' : '/post/list')(page=${i}, keyword=${postSearchDto.keyword}, searchType=${postSearchDto.searchType}, categoryId=${postSearchDto.categoryId})}"
+           th:text="${i}"
+           th:classappend="${i == currentPage} ? 'active' : ''">
+        </a>
     </span>
 
-    <button th:if="${currentPage < totalPages}"
-            th:onclick="|location.href='@{/post/list(page=${currentPage + 1}, keyword=${postSearchDto.keyword}, categoryId=${postSearchDto.categoryId})}'|">
-        다음
-    </button>
+    <!-- 다음 버튼 -->
+    <a th:if="${currentPage < totalPages}"
+       th:href="@{(${postSearchDto.keyword != null and postSearchDto.keyword != ''} ? '/post/search' : '/post/list')(page=${currentPage + 1}, keyword=${postSearchDto.keyword}, searchType=${postSearchDto.searchType}, categoryId=${postSearchDto.categoryId})}"
+       class="pagination-button">
+        다음 ▶
+    </a>
 </div>
 
-<form th:action="@{/post/search}" th:method="get" th:object="${postSearchDto}" class="search-form" onsubmit="return validateSearch()">
+<form th:action="@{/post/search}" th:method="get" th:object="${postSearchDto}" class="search-form"
+      onsubmit="return validateSearch()">
     <input type="text" th:field="${postSearchDto.keyword}" placeholder="검색어를 입력해주세요."/>
     <select th:field="${postSearchDto.searchType}">
         <option value="all" th:selected="${postSearchDto.searchType == 'all'}">제목+내용</option>

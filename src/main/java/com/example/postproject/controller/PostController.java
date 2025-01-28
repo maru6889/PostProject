@@ -44,8 +44,8 @@ public class PostController {
         searchDto.setOffset(offset);
         searchDto.setLimit(limit);
 
-        List<PostDto> posts = postService.findPostsWithMemberAndPaginationAndFilter(searchDto);
-        int totalPosts = postService.countPosts(keyword, null);
+        List<PostDto> posts = postService.findPostBySearchCondition(searchDto);
+        int totalPosts = postService.countPostsBySearchCondition(searchDto);
         int totalPages = Math.max((int) Math.ceil((double) totalPosts / limit), 1);
 
         model.addAttribute("posts", posts);
@@ -60,17 +60,19 @@ public class PostController {
     public String getAllPost(
             Model model,
             @RequestParam(required = false, name = "keyword") String keyword,
+            @RequestParam(required = false, name = "categoryId") Long categoryId,
             @RequestParam(required = false, defaultValue = "1", name = "page") int page,
             @RequestParam(required = false, defaultValue = "10", name = "limit") int limit)  {
 
         PostSearchDto searchDto = new PostSearchDto();
         int offset = (page - 1) * limit; //조회할 데이터의 시작 위치
+        searchDto.setCategoryId(categoryId);
         searchDto.setKeyword(keyword);
         searchDto.setOffset(offset);
         searchDto.setLimit(limit);
         List<PostDto> posts = postService.findPostsWithMemberAndPaginationAndFilter(searchDto);
 
-        int totalPosts = postService.countPosts(keyword, null);
+        int totalPosts = postService.countPostsBySearchCondition(searchDto);
 
         int totalPages = Math.max((int) Math.ceil((double) totalPosts / limit), 1);
 
@@ -105,7 +107,7 @@ public class PostController {
         searchDto.setCategoryId(categoryId);
         List<PostDto> posts = postService.findPostsWithMemberAndPaginationAndFilter(searchDto);
 
-        int totalPosts = postService.countPosts(keyword, categoryId);
+        int totalPosts = postService.countPostsBySearchCondition(searchDto);
 
         int totalPages = Math.max((int) Math.ceil((double) totalPosts / limit), 1);
 
@@ -133,7 +135,7 @@ public class PostController {
         searchDto.setCategoryId(categoryId);
         List<PostDto> posts = postService.findPostsWithMemberAndPaginationAndFilter(searchDto);
 
-        int totalPosts = postService.countPosts(keyword, categoryId);
+        int totalPosts = postService.countPostsBySearchCondition(searchDto);
 
         int totalPages = Math.max((int) Math.ceil((double) totalPosts / limit), 1);
 
@@ -161,7 +163,7 @@ public class PostController {
         searchDto.setCategoryId(categoryId);
         List<PostDto> posts = postService.findPostsWithMemberAndPaginationAndFilter(searchDto);
 
-        int totalPosts = postService.countPosts(keyword, categoryId);
+        int totalPosts = postService.countPostsBySearchCondition(searchDto);
 
         int totalPages = Math.max((int) Math.ceil((double) totalPosts / limit), 1);
 

@@ -44,6 +44,10 @@ public class PostService {
         return postRepository.findPostsWithMemberAndPaginationAndFilter(searchDto);
     }
 
+    public List<PostDto> findPostBySearchCondition(PostSearchDto searchDto) {
+        return postRepository.findPostBySearchCondition(searchDto);
+    }
+
     public Post findPostById(Long id) {
         return postRepository.findPostById(id);
     }
@@ -54,6 +58,10 @@ public class PostService {
 
     public int countPosts(String keyword, Long categoryId){
         return postRepository.countPosts(keyword, categoryId);
+    }
+
+    public int countPostsBySearchCondition(PostSearchDto searchDto) {
+        return postRepository.countPostsBySearchCondition(searchDto);
     }
 
     @Transactional

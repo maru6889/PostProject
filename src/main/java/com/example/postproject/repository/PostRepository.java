@@ -17,11 +17,15 @@ public interface PostRepository {
     List<Post> findPostsWithPaginationAndFilter(@Param("keyword") String keyword, @Param("offset") int offset, @Param("limit") int limit);
 
     List<PostDto> findPostsWithMemberAndPaginationAndFilter(PostSearchDto searchDto);
+
+    List<PostDto> findPostBySearchCondition(PostSearchDto searchDto);
     Post findPostById(Long id);
 
     PostDto findPostWithMemberById(Long id);
 
     int countPosts(@Param("keyword") String keyword, @Param("categoryId") Long categoryId);
+
+    int countPostsBySearchCondition(PostSearchDto searchDto);
 
     //생성
     int insertPost(Post post);
