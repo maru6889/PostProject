@@ -26,7 +26,7 @@
         select distinct p.id, p.title, p.content, p.views, p.created_at, p.updated_at, m.nickname, ca.name as category_name
         from post p
         join member m on p.member_id = m.id
-        left join category ca on p.category_id = ca.id
+        join category ca on p.category_id = ca.id
         <where>
             <if test="keyword != null and keyword != ''">
                 <choose>
@@ -62,7 +62,7 @@
         category_name
         from post p
         join member m on p.member_id = m.id
-        left join category ca on p.category_id = ca.id
+        join category ca on p.category_id = ca.id
         <choose>
             <when test="searchType == 'comment'">
                 left join comment c on p.id = c.post_id
@@ -108,7 +108,7 @@
         select p.id, p.title, p.content, p.views, p.created_at, p.updated_at, p.category_id, m.login_id, m.nickname, c.name as category_name
         from post p
         join member m on p.member_id = m.id
-        left join category c on p.category_id = c.id
+        join category c on p.category_id = c.id
         where p.id = #{id}
     </select>
 
@@ -131,7 +131,7 @@
         select p.id
         from post p
         join member m on p.member_id = m.id
-        left join category ca on p.category_id = ca.id
+        join category ca on p.category_id = ca.id
         <choose>
             <when test="searchType == 'comment'">
                 left join comment c on p.id = c.post_id
