@@ -37,13 +37,8 @@ jobs:
         run: chmod +x gradlew
 
       - name: 📦 Build project
-        run: SPRING_PROFILES_ACTIVE=prod ./gradlew build
+        run: ./gradlew build
         env:
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_PORT: ${{ secrets.DB_PORT }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           SPRING_PROFILES_ACTIVE: prod
 
       # - name: 🧪 Run tests
