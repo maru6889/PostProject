@@ -53,6 +53,6 @@ jobs:
           script: |
             cd ~/project/PostProject
             git pull origin main
-            ./gradlew build
+#            ./gradlew build
             sudo kill -9 $(lsof -t -i:8080) || true
             nohup java -jar ~/project/PostProject/build/libs/PostProject-0.0.1-SNAPSHOT.jar > output.log 2>&1 &
