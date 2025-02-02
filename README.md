@@ -67,7 +67,8 @@
 - **CI/CD:** GitHub Actions
 
 ## 🎯 ERD (데이터베이스 구조)
-post_project_erd.png*
+![Uploading post_project_erd.png…]()
+
 
 ## 🔧 프로젝트 설정 및 실행 방법
 ### 1️⃣ **환경 설정**
