@@ -43,3 +43,21 @@ jobs:
 
       # - name: 🧪 Run tests
       #   run: ./gradlew test
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📂 Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/project/PostProject
+            git pull origin main
+            ./gradlew build
+            sudo kill -9 $(lsof -t -i:8080) || true
+            nohup java -jar ~/project/PostProject/build/libs/PostProject-0.0.1-SNAPSHOT.jar > output.log 2>&1 &
